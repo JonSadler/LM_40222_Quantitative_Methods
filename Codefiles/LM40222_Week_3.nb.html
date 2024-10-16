@@ -1754,15 +1754,19 @@ in R</h1>
 
 
 <!-- rnb-text-begin -->
-<p>Outline:</p>
+<div id="outline" class="section level3">
+<h3>Outline:</h3>
 <p>In this session, you will be introduced to how to use R to manipulate
 spatial data (e.g. raster data and polygon data such as shapefiles), the
 importance of coordinate reference systems (CRSs) and how these data can
 be used to generate maps.</p>
-<p>Essential reading:</p>
+<div id="essential-reading" class="section level4">
+<h4>Essential reading:</h4>
 <p>TBC</p>
-<p>Learning outcomes:</p>
-<p>At the end of this section you will be able to use R to:</p>
+</div>
+<div id="learning-outcomes" class="section level4">
+<h4>Learning outcomes</h4>
+<p>At the end of this workshop you will be able to use R to:</p>
 <ul>
 <li>Import and manipulate raster and polygon data;</li>
 <li>Change CRSs to ensure your maps accurately represent the spatial
@@ -1770,13 +1774,123 @@ data they are showing;</li>
 <li>Create basic maps to show spatial patterns in census and
 environmental data.</li>
 </ul>
-<p>Load/install libraries</p>
-<p>Set our working directory for this week’s workshop.</p>
+</div>
+<div id="set-our-working-directory-for-this-weeks-workshop." class="section level4">
+<h4>Set our working directory for this week’s workshop.</h4>
 <!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc2V0d2QoXCIvVXNlcnMvam9uc2FkbGVyL0RvY3VtZW50cy9HaXRIdWIvVGVhY2hpbmcvTE1fNDAyMjJfUXVhbnRpdGF0aXZlX01ldGhvZHMvQ29kZWZpbGVzXCIpXG5gYGAifQ== -->
+<pre class="r"><code>setwd(&quot;/Users/jonsadler/Documents/GitHub/Teaching/LM_40222_Quantitative_Methods/Codefiles&quot;)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+</div>
+</div>
+<div id="important-background-information-on-spatial-data" class="section level3">
+<h3>Important background information on spatial data</h3>
+<div id="coordinate-reference-systems" class="section level4">
+<h4>Coordinate reference systems</h4>
+</div>
+<div id="features-of-spatial-data" class="section level4">
+<h4>Features of spatial data</h4>
+<div id="polygon-data-and-shapefiles" class="section level5">
+<h5>Polygon data and shapefiles</h5>
+</div>
+<div id="raster-data" class="section level5">
+<h5>Raster data</h5>
+<p>If you want to see what’s possible with R’s mapping capabilities then
+I refer to <strong>Milos makes maps</strong> tutorials on YouTube:</p>
+<p><a href="https://www.youtube.com/@milos-makes-maps" class="uri">https://www.youtube.com/@milos-makes-maps</a></p>
+<p>Please have a watch of a few of them - it will help consolidate the
+functions and packages we are going to use as well as provide you with
+some useful coding tips!</p>
+</div>
+</div>
+<div id="install-libraries" class="section level4">
+<h4>Install libraries</h4>
+<p>The R functions for managing these datasets are relatively
+straightforward but require a set of new bespoke libraries as well as
+the tidyverse library we’ve been working with. We install them en masse
+to reduce the amount of code we need. It requires a bit of code to loop
+through the libraries. **Don’t worry about understanding all of this at
+once. It gets much easier with practice.</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBMaXN0IG9mIHJlcXVpcmVkIGxpYnJhcmllc1xucmVxdWlyZWRfbGlicmFyaWVzIDwtIGMoXCJzZlwiLFwidGVycmFcIiwgXCJzcGRlcFwiLFwibWFwc2ZcIilcblxuIyBDaGVjayBmb3IgdGhlIGxpYnJhcmllcyB0aGF0IGFyZSBub3QgYWxyZWFkeSBpbnN0YWxsZWRcbmxpYnJhcmllc190b19pbnN0YWxsIDwtIHJlcXVpcmVkX2xpYnJhcmllc1shKHJlcXVpcmVkX2xpYnJhcmllcyAlaW4lIGluc3RhbGxlZC5wYWNrYWdlcygpWyxcIlBhY2thZ2VcIl0pXVxuXG4jIEluc3RhbGwgbWlzc2luZyBsaWJyYXJpZXNcbmlmKGxlbmd0aChsaWJyYXJpZXNfdG9faW5zdGFsbCkpIHtcbiAgaW5zdGFsbC5wYWNrYWdlcyhsaWJyYXJpZXNfdG9faW5zdGFsbCwgZGVwZW5kZW5jaWVzID0gVFJVRSlcbn1cblxuIyBMb2FkIGFsbCB0aGUgcmVxdWlyZWQgbGlicmFyaWVzXG5sYXBwbHkocmVxdWlyZWRfbGlicmFyaWVzLCBsaWJyYXJ5LCBjaGFyYWN0ZXIub25seSA9IFRSVUUpXG5gYGAifQ== -->
+<pre class="r"><code># List of required libraries
+required_libraries &lt;- c(&quot;sf&quot;,&quot;terra&quot;, &quot;spdep&quot;,&quot;mapsf&quot;)
+
+# Check for the libraries that are not already installed
+libraries_to_install &lt;- required_libraries[!(required_libraries %in% installed.packages()[,&quot;Package&quot;])]
+
+# Install missing libraries
+if(length(libraries_to_install)) {
+  install.packages(libraries_to_install, dependencies = TRUE)
+}
+
+# Load all the required libraries
+lapply(required_libraries, library, character.only = TRUE)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>This first line of code asks to supply a vector of the libraries we
+need using the <strong>c()</strong> command. We need the following
+libraries:</p>
+<ul>
+<li><strong>“sf”</strong> - Read about it: <a href="https://r-spatial.github.io/sf/" class="uri">https://r-spatial.github.io/sf/</a>. Used to manage
+shapefiles, point data and so on.</li>
+<li><strong>“terra”</strong> - Read about it: <a href="https://rspatial.org/pkg/1-introduction.html" class="uri">https://rspatial.org/pkg/1-introduction.html</a>. Used to
+manage spatial raster data.</li>
+<li><strong>“spdep”</strong> - <a href="https://cran.r-project.org/web/packages/spdep/index.html" class="uri">https://cran.r-project.org/web/packages/spdep/index.html</a>.
+Used for geospatial analyses such as nearest neighbour analyses. See
+Roger Bivand’s book on the module resource list.</li>
+<li><strong>“mapsf”</strong> - <a href="https://riatelab.github.io/mapsf/articles/mapsf.html" class="uri">https://riatelab.github.io/mapsf/articles/mapsf.html</a>.
+The aim of mapsf is to obtain thematic maps with the visual quality of
+those built with a classical mapping or GIS software.</li>
+</ul>
+<p>The <strong>installed.packages()</strong> function returns a matrix
+of installed packages and maps this against the libraries we need. The
+line checking for uninstalled packages uses the !(required_libraries
+%in% installed.packages()[,“Package”]) expression to identify packages
+not yet installed. <strong>install.packages()</strong> Installs missing
+packages with their dependencies. **lapply()*:** Loads each required
+library after ensuring they’re installed. It is the equivalent of
+repeatedly typing library(thePackageName) many times.</p>
+<p><strong>NOTE</strong> that we are installing more than we need but we
+will use these are we work through the module.</p>
+<p>We are going to start our mapping journey using
+<strong>ggplot2</strong> because if can handle spatial data and we are
+familar with the syntax of the package.</p>
+<p>ADD IN THE MAPPING STUFF - NEED TO FIND A GGPLOT2 MAPPING TUTORIAL TO
+WORK WITH…</p>
+<p>Now we’ll turn our attention to the census data we created in
+workshop one and carried out some EDA on in workshop two. So we need to
+locate it and load it:</p>
+</div>
+<div id="load-data-file" class="section level4">
+<h4>Load data file</h4>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYmhhbV9kYXRhIDwtIHJlYWRfY3N2KFwiPj4+Pj5cIikgIyBsaW5rIHRoaXMgdG8gdGhlIGRpcmVjdGx5IHdoZXJlIHlvdXIgZGF0YSBhcmUgc2F0XG5gYGAifQ== -->
+<pre class="r"><code>bham_data &lt;- read_csv(&quot;&gt;&gt;&gt;&gt;&gt;&quot;) # link this to the directly where your data are sat</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>We also need to download a shapefile for the LSOAs for the city. The
+should be located in your data directory in a subdirectory called
+shapefiles.</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBsaW5rIHRvIHNoYXBlZmlsZXMgYW5kIGxvYWQuLi4uXG5gYGAifQ== -->
+<pre class="r"><code># link to shapefiles and load....</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
+</div>
+</div>
 
-<div id="rmd-source-code">LS0tCnRpdGxlOiAiVmlzdWFsaXNpbmcgc3BhdGlhbCBkYXRhIGFuZCBjcmVhdGluZyBtYXBzIGluIFIiCnN1YnRpdGxlOiAiV2VlayAzIgpvdXRwdXQ6IGh0bWxfbm90ZWJvb2sKLS0tCk91dGxpbmU6CgpJbiB0aGlzIHNlc3Npb24sIHlvdSB3aWxsIGJlIGludHJvZHVjZWQgdG8gaG93IHRvIHVzZSBSIHRvIG1hbmlwdWxhdGUgc3BhdGlhbCBkYXRhIChlLmcuIHJhc3RlciBkYXRhIGFuZCBwb2x5Z29uIGRhdGEgc3VjaCBhcyBzaGFwZWZpbGVzKSwgdGhlIGltcG9ydGFuY2Ugb2YgY29vcmRpbmF0ZSByZWZlcmVuY2Ugc3lzdGVtcyAoQ1JTcykgYW5kIGhvdyB0aGVzZSBkYXRhIGNhbiBiZSB1c2VkIHRvIGdlbmVyYXRlIG1hcHMuCgpFc3NlbnRpYWwgcmVhZGluZzoKClRCQwoKTGVhcm5pbmcgb3V0Y29tZXM6CgpBdCB0aGUgZW5kIG9mIHRoaXMgc2VjdGlvbiB5b3Ugd2lsbCBiZSBhYmxlIHRvIHVzZSBSIHRvOgoKLSBJbXBvcnQgYW5kIG1hbmlwdWxhdGUgcmFzdGVyIGFuZCBwb2x5Z29uIGRhdGE7Ci0gQ2hhbmdlIENSU3MgdG8gZW5zdXJlIHlvdXIgbWFwcyBhY2N1cmF0ZWx5IHJlcHJlc2VudCB0aGUgc3BhdGlhbCBkYXRhIHRoZXkgYXJlIHNob3dpbmc7Ci0gQ3JlYXRlIGJhc2ljIG1hcHMgdG8gc2hvdyBzcGF0aWFsIHBhdHRlcm5zIGluIGNlbnN1cyBhbmQgZW52aXJvbm1lbnRhbCBkYXRhLgoKTG9hZC9pbnN0YWxsIGxpYnJhcmllcwoKClNldCBvdXIgd29ya2luZyBkaXJlY3RvcnkgZm9yIHRoaXMgd2VlaydzIHdvcmtzaG9wLgpgYGB7cn0Kc2V0d2QoIi9Vc2Vycy9qb25zYWRsZXIvTGlicmFyeS9DbG91ZFN0b3JhZ2UvT25lRHJpdmUtVW5pdmVyc2l0eW9mQmlybWluZ2hhbS9UZWFjaGluZy1tYXRlcmlhbHMvQ09VUlNFUy80VEhfWVIvTE0gNDAyMjIgUXVhbnRpdGF0aXZlIG1ldGhvZHMvQ29kZWZpbGVzL1dlZWsgMyIpCmBgYAoK</div>
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiVmlzdWFsaXNpbmcgc3BhdGlhbCBkYXRhIGFuZCBjcmVhdGluZyBtYXBzIGluIFIiCnN1YnRpdGxlOiAiV2VlayAzIgpvdXRwdXQ6IGh0bWxfbm90ZWJvb2sKLS0tCiMjIyBPdXRsaW5lOgpJbiB0aGlzIHNlc3Npb24sIHlvdSB3aWxsIGJlIGludHJvZHVjZWQgdG8gaG93IHRvIHVzZSBSIHRvIG1hbmlwdWxhdGUgc3BhdGlhbCBkYXRhIChlLmcuIHJhc3RlciBkYXRhIGFuZCBwb2x5Z29uIGRhdGEgc3VjaCBhcyBzaGFwZWZpbGVzKSwgdGhlIGltcG9ydGFuY2Ugb2YgY29vcmRpbmF0ZSByZWZlcmVuY2Ugc3lzdGVtcyAoQ1JTcykgYW5kIGhvdyB0aGVzZSBkYXRhIGNhbiBiZSB1c2VkIHRvIGdlbmVyYXRlIG1hcHMuCgojIyMjIEVzc2VudGlhbCByZWFkaW5nOgoKVEJDCgojIyMjIExlYXJuaW5nIG91dGNvbWVzCkF0IHRoZSBlbmQgb2YgdGhpcyB3b3Jrc2hvcCB5b3Ugd2lsbCBiZSBhYmxlIHRvIHVzZSBSIHRvOgoKLSBJbXBvcnQgYW5kIG1hbmlwdWxhdGUgcmFzdGVyIGFuZCBwb2x5Z29uIGRhdGE7Ci0gQ2hhbmdlIENSU3MgdG8gZW5zdXJlIHlvdXIgbWFwcyBhY2N1cmF0ZWx5IHJlcHJlc2VudCB0aGUgc3BhdGlhbCBkYXRhIHRoZXkgYXJlIHNob3dpbmc7Ci0gQ3JlYXRlIGJhc2ljIG1hcHMgdG8gc2hvdyBzcGF0aWFsIHBhdHRlcm5zIGluIGNlbnN1cyBhbmQgZW52aXJvbm1lbnRhbCBkYXRhLgoKIyMjIyBTZXQgb3VyIHdvcmtpbmcgZGlyZWN0b3J5IGZvciB0aGlzIHdlZWsncyB3b3Jrc2hvcC4KYGBge3J9CnNldHdkKCIvVXNlcnMvam9uc2FkbGVyL0RvY3VtZW50cy9HaXRIdWIvVGVhY2hpbmcvTE1fNDAyMjJfUXVhbnRpdGF0aXZlX01ldGhvZHMvQ29kZWZpbGVzIikgIyB0aGlzIGlzIG1pbmUgc28gZG9uJ3QgY29weSB0aGUgcGF0aCEKYGBgCgojIyMgSW1wb3J0YW50IGJhY2tncm91bmQgaW5mb3JtYXRpb24gb24gc3BhdGlhbCBkYXRhCgojIyMjIENvb3JkaW5hdGUgcmVmZXJlbmNlIHN5c3RlbXMKCiMjIyMgRmVhdHVyZXMgb2Ygc3BhdGlhbCBkYXRhCgojIyMjIyBQb2x5Z29uIGRhdGEgYW5kIHNoYXBlZmlsZXMKCiMjIyMjIFJhc3RlciBkYXRhCgpJZiB5b3Ugd2FudCB0byBzZWUgd2hhdCdzIHBvc3NpYmxlIHdpdGggUidzIG1hcHBpbmcgY2FwYWJpbGl0aWVzIHRoZW4gSSByZWZlciB0byAqKk1pbG9zIG1ha2VzIG1hcHMqKiB0dXRvcmlhbHMgb24gWW91VHViZTogCgpodHRwczovL3d3dy55b3V0dWJlLmNvbS9AbWlsb3MtbWFrZXMtbWFwcwoKUGxlYXNlIGhhdmUgYSB3YXRjaCBvZiBhIGZldyBvZiB0aGVtIC0gaXQgd2lsbCBoZWxwIGNvbnNvbGlkYXRlIHRoZSBmdW5jdGlvbnMgYW5kIHBhY2thZ2VzIHdlIGFyZSBnb2luZyB0byB1c2UgYXMgd2VsbCBhcyBwcm92aWRlIHlvdSB3aXRoIHNvbWUgdXNlZnVsIGNvZGluZyB0aXBzIQoKIyMjIyBJbnN0YWxsIGxpYnJhcmllcwpUaGUgUiBmdW5jdGlvbnMgZm9yIG1hbmFnaW5nIHRoZXNlIGRhdGFzZXRzIGFyZSByZWxhdGl2ZWx5IHN0cmFpZ2h0Zm9yd2FyZCBidXQgcmVxdWlyZSBhIHNldCBvZiBuZXcgYmVzcG9rZSBsaWJyYXJpZXMgYXMgd2VsbCBhcyB0aGUgdGlkeXZlcnNlIGxpYnJhcnkgd2UndmUgYmVlbiB3b3JraW5nIHdpdGguIFdlIGluc3RhbGwgdGhlbSBlbiBtYXNzZSB0byByZWR1Y2UgdGhlIGFtb3VudCBvZiBjb2RlIHdlIG5lZWQuIEl0IHJlcXVpcmVzIGEgYml0IG9mIGNvZGUgdG8gbG9vcCB0aHJvdWdoIHRoZSBsaWJyYXJpZXMuICoqRG9uJ3Qgd29ycnkgYWJvdXQgdW5kZXJzdGFuZGluZyBhbGwgb2YgdGhpcyBhdCBvbmNlLiBJdCBnZXRzIG11Y2ggZWFzaWVyIHdpdGggcHJhY3RpY2UuCgpgYGB7cn0KIyBMaXN0IG9mIHJlcXVpcmVkIGxpYnJhcmllcwpyZXF1aXJlZF9saWJyYXJpZXMgPC0gYygic2YiLCJ0ZXJyYSIsICJzcGRlcCIsIm1hcHNmIikKCiMgQ2hlY2sgZm9yIHRoZSBsaWJyYXJpZXMgdGhhdCBhcmUgbm90IGFscmVhZHkgaW5zdGFsbGVkCmxpYnJhcmllc190b19pbnN0YWxsIDwtIHJlcXVpcmVkX2xpYnJhcmllc1shKHJlcXVpcmVkX2xpYnJhcmllcyAlaW4lIGluc3RhbGxlZC5wYWNrYWdlcygpWywiUGFja2FnZSJdKV0KCiMgSW5zdGFsbCBtaXNzaW5nIGxpYnJhcmllcwppZihsZW5ndGgobGlicmFyaWVzX3RvX2luc3RhbGwpKSB7CiAgaW5zdGFsbC5wYWNrYWdlcyhsaWJyYXJpZXNfdG9faW5zdGFsbCwgZGVwZW5kZW5jaWVzID0gVFJVRSkKfQoKIyBMb2FkIGFsbCB0aGUgcmVxdWlyZWQgbGlicmFyaWVzCmxhcHBseShyZXF1aXJlZF9saWJyYXJpZXMsIGxpYnJhcnksIGNoYXJhY3Rlci5vbmx5ID0gVFJVRSkKYGBgClRoaXMgZmlyc3QgbGluZSBvZiBjb2RlIGFza3MgdG8gc3VwcGx5IGEgdmVjdG9yIG9mIHRoZSBsaWJyYXJpZXMgd2UgbmVlZCB1c2luZyB0aGUgKipjKCkqKiBjb21tYW5kLiBXZSBuZWVkIHRoZSBmb2xsb3dpbmcgbGlicmFyaWVzOgoKLSAqKiJzZiIqKiAtIFJlYWQgYWJvdXQgaXQ6IGh0dHBzOi8vci1zcGF0aWFsLmdpdGh1Yi5pby9zZi8uIFVzZWQgdG8gbWFuYWdlIHNoYXBlZmlsZXMsIHBvaW50IGRhdGEgYW5kIHNvIG9uLgotICoqInRlcnJhIioqIC0gUmVhZCBhYm91dCBpdDogaHR0cHM6Ly9yc3BhdGlhbC5vcmcvcGtnLzEtaW50cm9kdWN0aW9uLmh0bWwuIFVzZWQgdG8gbWFuYWdlIHNwYXRpYWwgcmFzdGVyIGRhdGEuCi0gKioic3BkZXAiKiogLSBodHRwczovL2NyYW4uci1wcm9qZWN0Lm9yZy93ZWIvcGFja2FnZXMvc3BkZXAvaW5kZXguaHRtbC4gVXNlZCBmb3IgZ2Vvc3BhdGlhbCBhbmFseXNlcyBzdWNoIGFzIG5lYXJlc3QgbmVpZ2hib3VyIGFuYWx5c2VzLiBTZWUgUm9nZXIgQml2YW5kJ3MgYm9vayBvbiB0aGUgbW9kdWxlIHJlc291cmNlIGxpc3QuCi0gKioibWFwc2YiKiogLSBodHRwczovL3JpYXRlbGFiLmdpdGh1Yi5pby9tYXBzZi9hcnRpY2xlcy9tYXBzZi5odG1sLiBUaGUgYWltIG9mIG1hcHNmIGlzIHRvIG9idGFpbiB0aGVtYXRpYyBtYXBzIHdpdGggdGhlIHZpc3VhbCBxdWFsaXR5IG9mIHRob3NlIGJ1aWx0IHdpdGggYSBjbGFzc2ljYWwgbWFwcGluZyBvciBHSVMgc29mdHdhcmUuCgpUaGUgKippbnN0YWxsZWQucGFja2FnZXMoKSoqIGZ1bmN0aW9uIHJldHVybnMgYSBtYXRyaXggb2YgaW5zdGFsbGVkIHBhY2thZ2VzIGFuZCBtYXBzIHRoaXMgYWdhaW5zdCB0aGUgbGlicmFyaWVzIHdlIG5lZWQuIFRoZSBsaW5lIGNoZWNraW5nIGZvciB1bmluc3RhbGxlZCBwYWNrYWdlcyB1c2VzIHRoZSAhKHJlcXVpcmVkX2xpYnJhcmllcyAlaW4lIGluc3RhbGxlZC5wYWNrYWdlcygpWywiUGFja2FnZSJdKSBleHByZXNzaW9uIHRvIGlkZW50aWZ5IHBhY2thZ2VzIG5vdCB5ZXQgaW5zdGFsbGVkLiAqKmluc3RhbGwucGFja2FnZXMoKSoqIEluc3RhbGxzIG1pc3NpbmcgcGFja2FnZXMgd2l0aCB0aGVpciBkZXBlbmRlbmNpZXMuCioqbGFwcGx5KCkqOioqIExvYWRzIGVhY2ggcmVxdWlyZWQgbGlicmFyeSBhZnRlciBlbnN1cmluZyB0aGV5J3JlIGluc3RhbGxlZC4gSXQgaXMgdGhlIGVxdWl2YWxlbnQgb2YgcmVwZWF0ZWRseSB0eXBpbmcgbGlicmFyeSh0aGVQYWNrYWdlTmFtZSkgbWFueSB0aW1lcy4KCioqTk9URSoqIHRoYXQgd2UgYXJlIGluc3RhbGxpbmcgbW9yZSB0aGFuIHdlIG5lZWQgYnV0IHdlIHdpbGwgdXNlIHRoZXNlIGFyZSB3ZSB3b3JrIHRocm91Z2ggdGhlIG1vZHVsZS4KCldlIGFyZSBnb2luZyB0byBzdGFydCBvdXIgbWFwcGluZyBqb3VybmV5IHVzaW5nICoqZ2dwbG90MioqIGJlY2F1c2UgaWYgY2FuIGhhbmRsZSBzcGF0aWFsIGRhdGEgYW5kIHdlIGFyZSBmYW1pbGFyIHdpdGggdGhlIHN5bnRheCBvZiB0aGUgcGFja2FnZS4KCgpBREQgSU4gVEhFIE1BUFBJTkcgU1RVRkYgLSBORUVEIFRPIEZJTkQgQSBHR1BMT1QyIE1BUFBJTkcgVFVUT1JJQUwgVE8gV09SSyBXSVRILi4uCgoKCk5vdyB3ZSdsbCB0dXJuIG91ciBhdHRlbnRpb24gdG8gdGhlIGNlbnN1cyBkYXRhIHdlIGNyZWF0ZWQgaW4gd29ya3Nob3Agb25lIGFuZCBjYXJyaWVkIG91dCBzb21lIEVEQSBvbiBpbiB3b3Jrc2hvcCB0d28uIFNvIHdlIG5lZWQgdG8gbG9jYXRlIGl0IGFuZCBsb2FkIGl0OgoKIyMjIyBMb2FkIGRhdGEgZmlsZQpgYGB7cn0KYmhhbV9kYXRhIDwtIHJlYWRfY3N2KCI+Pj4+PiIpICMgbGluayB0aGlzIHRvIHRoZSBkaXJlY3RseSB3aGVyZSB5b3VyIGRhdGEgYXJlIHNhdApgYGAKCldlIGFsc28gbmVlZCB0byBkb3dubG9hZCBhIHNoYXBlZmlsZSBmb3IgdGhlIExTT0FzIGZvciB0aGUgY2l0eS4gVGhlIHNob3VsZCBiZSBsb2NhdGVkIGluIHlvdXIgZGF0YSBkaXJlY3RvcnkgaW4gYSBzdWJkaXJlY3RvcnkgY2FsbGVkIHNoYXBlZmlsZXMuCmBgYHtyfQojIGxpbmsgdG8gc2hhcGVmaWxlcyBhbmQgbG9hZC4uLi4KYGBgCgo=</div>
 
 
 

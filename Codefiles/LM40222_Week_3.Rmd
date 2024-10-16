@@ -3,27 +3,87 @@ title: "Visualising spatial data and creating maps in R"
 subtitle: "Week 3"
 output: html_notebook
 ---
-Outline:
-
+### Outline:
 In this session, you will be introduced to how to use R to manipulate spatial data (e.g. raster data and polygon data such as shapefiles), the importance of coordinate reference systems (CRSs) and how these data can be used to generate maps.
 
-Essential reading:
+#### Essential reading:
 
 TBC
 
-Learning outcomes:
-
-At the end of this section you will be able to use R to:
+#### Learning outcomes
+At the end of this workshop you will be able to use R to:
 
 - Import and manipulate raster and polygon data;
 - Change CRSs to ensure your maps accurately represent the spatial data they are showing;
 - Create basic maps to show spatial patterns in census and environmental data.
 
-Load/install libraries
-
-
-Set our working directory for this week's workshop.
+#### Set our working directory for this week's workshop.
 ```{r}
-setwd("/Users/jonsadler/Library/CloudStorage/OneDrive-UniversityofBirmingham/Teaching-materials/COURSES/4TH_YR/LM 40222 Quantitative methods/Codefiles/Week 3")
+setwd("/Users/jonsadler/Documents/GitHub/Teaching/LM_40222_Quantitative_Methods/Codefiles") # this is mine so don't copy the path!
+```
+
+### Important background information on spatial data
+
+#### Coordinate reference systems
+
+#### Features of spatial data
+
+##### Polygon data and shapefiles
+
+##### Raster data
+
+If you want to see what's possible with R's mapping capabilities then I refer to **Milos makes maps** tutorials on YouTube: 
+
+https://www.youtube.com/@milos-makes-maps
+
+Please have a watch of a few of them - it will help consolidate the functions and packages we are going to use as well as provide you with some useful coding tips!
+
+#### Install libraries
+The R functions for managing these datasets are relatively straightforward but require a set of new bespoke libraries as well as the tidyverse library we've been working with. We install them en masse to reduce the amount of code we need. It requires a bit of code to loop through the libraries. **Don't worry about understanding all of this at once. It gets much easier with practice.
+
+```{r}
+# List of required libraries
+required_libraries <- c("sf","terra", "spdep","mapsf")
+
+# Check for the libraries that are not already installed
+libraries_to_install <- required_libraries[!(required_libraries %in% installed.packages()[,"Package"])]
+
+# Install missing libraries
+if(length(libraries_to_install)) {
+  install.packages(libraries_to_install, dependencies = TRUE)
+}
+
+# Load all the required libraries
+lapply(required_libraries, library, character.only = TRUE)
+```
+This first line of code asks to supply a vector of the libraries we need using the **c()** command. We need the following libraries:
+
+- **"sf"** - Read about it: https://r-spatial.github.io/sf/. Used to manage shapefiles, point data and so on.
+- **"terra"** - Read about it: https://rspatial.org/pkg/1-introduction.html. Used to manage spatial raster data.
+- **"spdep"** - https://cran.r-project.org/web/packages/spdep/index.html. Used for geospatial analyses such as nearest neighbour analyses. See Roger Bivand's book on the module resource list.
+- **"mapsf"** - https://riatelab.github.io/mapsf/articles/mapsf.html. The aim of mapsf is to obtain thematic maps with the visual quality of those built with a classical mapping or GIS software.
+
+The **installed.packages()** function returns a matrix of installed packages and maps this against the libraries we need. The line checking for uninstalled packages uses the !(required_libraries %in% installed.packages()[,"Package"]) expression to identify packages not yet installed. **install.packages()** Installs missing packages with their dependencies.
+**lapply()*:** Loads each required library after ensuring they're installed. It is the equivalent of repeatedly typing library(thePackageName) many times.
+
+**NOTE** that we are installing more than we need but we will use these are we work through the module.
+
+We are going to start our mapping journey using **ggplot2** because if can handle spatial data and we are familar with the syntax of the package.
+
+
+ADD IN THE MAPPING STUFF - NEED TO FIND A GGPLOT2 MAPPING TUTORIAL TO WORK WITH...
+
+
+
+Now we'll turn our attention to the census data we created in workshop one and carried out some EDA on in workshop two. So we need to locate it and load it:
+
+#### Load data file
+```{r}
+bham_data <- read_csv(">>>>>") # link this to the directly where your data are sat
+```
+
+We also need to download a shapefile for the LSOAs for the city. The should be located in your data directory in a subdirectory called shapefiles.
+```{r}
+# link to shapefiles and load....
 ```
 
