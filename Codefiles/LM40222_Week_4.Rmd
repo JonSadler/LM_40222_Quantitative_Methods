@@ -1,0 +1,25 @@
+---
+title: "Visualisation and modelling spatial data"
+subtitle: "Week 4"
+output: html_notebook
+---
+
+Outline:
+
+In this session you will be introduced to how to use R to model and query spatial data to show both spatial and temporal patterns and some basic spatial statistics to analyse whether the data are spatially structured and show statistically significant spatial patterns.
+
+Essential reading:
+
+TBC
+
+Learning outcomes:
+
+At the end of this section you will be able to use R to:
+
+Load/install libraries
+
+Set Working directory
+```{r}
+setwd("/Users/jonsadler/Library/CloudStorage/OneDrive-UniversityofBirmingham/Teaching-materials/COURSES/4TH_YR/LM 40222 Quantitative methods/Codefiles/Week 4")
+```
+

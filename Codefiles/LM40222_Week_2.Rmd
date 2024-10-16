@@ -1,0 +1,438 @@
+---
+title: "Data exploration strategies using R"
+subtitle: "Week 2"
+output: html_notebook
+---
+#### Outline of the session
+This week we are going to make a start on data visualisation and exploration. To do this we will use graphical techniques that visualize and transform to explore data in a systematic way, a task that statisticians call **exploratory data analysis**, or EDA for short. EDA is an iterative cycle, where you:
+
+-   Generate questions about your data.
+-   Search for answers by visualizing, transforming, and modelling your
+    data.
+
+It is a key part of the important task of communicating your findings to the wider world in a clear and reproducible manner (Figure 1).
+![](/Users/jonsadler/Library/CloudStorage/OneDrive-UniversityofBirmingham/Teaching-materials/COURSES/4TH_YR/LM 40222 Quantitative methods/Images/Communicate_data.jpg)
+**Figure 1:** The data analysis cycle.
+
+This is long process so we will start with the basics which we will extend and reinforce in the coming workshops. Today we going to use the dataset you created at the end of the last workshop, supplemented by some data that are available in the basic installation of R. The aim is to use the ggplot2 package to do this work and we will use a range of different types of graphs to illustrate how to represent data structure and the relationship between columns of data in our dataframes. We will introduce you to elements of base R graphics as the workshops progress. 
+
+Data exploration is an important and integral part of data analysis. If you read around this you will find that people suggest it is appropriate to spend ~ 50% of your analytical time engaged in exploring your datasets to identify (sometimes hidden) issues. This is key to highlighting:
+
+1.  The variation and in the data. Or, put another way, the distribution of the data.
+2.  Possible typological / recording issues in the data.
+3.  The presence of influential and extreme points - sometimes termed
+    'outliers'.
+
+Statisticians (and all researchers by association if they use statistics) use visualization and transformation to explore their data in a systematic way. Statisticians call this exploratory
+data analysis, or EDA for short. EDA is an iterative cycle where you:
+
+- Generate questions about your data.
+- Search for answers by visualizing, transforming, and modelling your
+data.
+- Use what you learn to refine your questions and/or generate new
+questions. 
+
+***Session Aim**
+To understand the importance of data visualisation for data analysis.
+
+**Learning Outcomes**
+At the end of this workshop your will be able to use the **ggplot2** package for data visualisation with a range of types of graphics to examine your data in terms of:
+
+-   Comparisons of variables
+-   Examining data distributions and frequencies
+-   Finding associations between variables
+-   Identifying potential outliers
+-   Creating high quality graphics
+
+**Maxim of the day “Don’t start data analysis without exploring the data
+(graphically) first”**
+
+#### An introduction to ggplot2 (from the tidyverse package)
+We are going to use **ggplot2** for all our plotting in this module unless it is more difficult to do so (i.e. GIS type functions). As I mentioned R was created to generate excellent graphic so the functions in base R to this are extensive. My decision to use **ggplot2** is base on its clear graphical structure or as Wickham et al. might say, **its grammar of graphics**. There is a whole book dedicated to this:
+
+Wickham, H., Gentleman, R., Hornick, K. & Parmigiani, G. (2009)
+*ggplot2: Elegant Graphics for Data Analysis*. Springer. New York.
+
+The third updated edition is freely available here should you wish to
+read it: <https://ggplot2-book.org/>
+
+It works by layering up components as shown below in Figure 2. This is a screenshot from Wickham et al. (2024) i.e. the book list in the URL above. The text describes the elements better than I could.
+
+![](/Users/jonsadler/Library/CloudStorage/OneDrive-UniversityofBirmingham/Teaching-materials/COURSES/4TH_YR/LM 40222 Quantitative methods/Images/ggplot_grammar.jpg)
+**Figure 2:** ggplot2 core structural elements.
+
+**Do not stress if this all appears impenetrable. We will unpack it in today's workshop and reinforce your understanding in subsequent sessions as the module progresses**. Let's make a start on today's activities.
+
+#### Things to do at the start of each session
+1.  **Set your working directory**. Note RStudio can save your working
+    environment so you may already have that in hand from the last
+    session i.e. the WD might be correct. If not either set it manually
+    by clicking on the **Session** option from the top bar, click on
+    **Set Working Directory** then **Choose Directory** and use the
+    search window to click through to your directory and select
+    **Open**. Alternatively, you can type in the address of the working
+    directory manually using the setwd() function as demonstrated below.
+    This requires you to type in the full address of where your data are
+    stored. **Pay attention to the double quotes around the path
+    address**.
+2.  **Load the packages** that you want to use. In this session we only
+    need the **tidyverse** package. We'll be installing many more as the
+    sessions progress so the list will increase in size.
+
+```{r}
+library("tidyverse") # don't forget to use the quote marks!
+```
+
+3.  Find the dataset from last week. Recall it was named
+    "practical_data.csv". When you saved it, the file would have been
+    put in the work directory which was live at that point. So depending
+    on how you organised things, it'll likely be in directory called
+    'Week 1' or something similar. To keep things tidy I tend to
+    organise my file structure in a manner that separates codefiles from
+    the datafiles. I put all my codefiles in directory called
+    'Codefiles' and all my datafiles in a directory called 'Data'. I also have subdirectories for 'Docs', 'Images' and 'Outputs' To load the data in, I code that
+    directly using the **setwd()** function. Figure 3 (below) shows a
+    screenshot of this structure. **You need to figure out a strategy
+    that works for you**.
+
+![](/Users/jonsadler/Library/CloudStorage/OneDrive-UniversityofBirmingham/Teaching-materials/COURSES/4TH_YR/LM 40222 Quantitative methods/Images/Mydirectory_screen.png)
+**Figure 3:** Jon's directory structure.
+
+4.  **Create your new script by new file clicking on the green cross at
+    the top left of the window -> selecting 'Script file' from the
+    dropdown list.** A new file called **untitled** will be added to the
+    tabs. Click on the tab and then blue disk icon to save the file.
+    Note that it will be saved to your current working directory, so
+    make sure you are happy with that location. Give it a name that is
+    meaningful to you. I name mine with module code and then week number
+    (e.g. LM40222_LSOA_Week_1.Rmd). Note that I use R notebooks to create the
+    html documents for these classes so the file extension (or suffix if
+    you like) is **Rmd**. You are creating scripts so their extension
+    will be **.R**.
+
+#### Today's session
+Let's starting by loading at your dataset. Mine is now located in my data directory in the Birmingham Census 2021 MSOA subdirectory. I am going to load it directly from there using the appropriate path. It's long so I am setting my WD to there manually as described above, copying the path using **getwd()** and adding the path and filename to my **read_csv()** function call:
+
+```{r}
+BhamData <- read_csv("/Users/jonsadler/Library/CloudStorage/OneDrive-UniversityofBirmingham/Teaching-materials/COURSES/4TH_YR/LM 40222 Quantitative methods/Data/Birmingham Census 2021 MSOA/practical_data.csv") # notice the use of quotes.
+```
+When loaded it will appear in the "Environment" window (top right). I called it "BhamData". Let's revise how it is structured. This time we'll use **glimpse()** rather than **str**. But why not run them both and compare the differences.
+
+I called the imported data **BhamData** you can call it whatever you want but as we progress remember where my code states **BhamData** you need to replace it with **your dataframe name** if you called it something else! We need to revisit the structure of the data before we start plotting things.
+```{r}
+glimpse((BhamData))
+```
+
+We can see that dataset has 659 rows which are the 659 lower layer super output areas in the City of Birmingham and 5 columns (see last week's Appendix for full descriptions of the data metadata/explanations):
+
+-   Code - the unique LSOA codes.
+-   White_British which is the % of people who are white and British.
+-   Low_Occupancy which is % of people living in very overcrowded
+    accommodation where there are not enough bedrooms that meet statutory
+    guidance.
+-   Unemployed which is the % of people of working (that aren't
+    students) who are unemployed.
+-   Qualification which is % of people with higher level qualifications
+    (i.e. effectively post school qualifications).
+
+We can also see that the data type are double (i.e. decimal numbers) as shown by <dbl> adjacent to column 2,3,4, and 5, but column 1 (i.e. **Code**) is shown as <chr> meaning it is a character data class. R will use this a **factor** in our analyses for many statistical functions but not all, so we need to remember that! Recall also that the data we are using are all percentages so we don't want to see any numbers larger than 100! We can check by using the **summary()** function.
+
+```{r}
+summary(BhamData)
+```
+
+Examining the Max data we see all are less than 100%. It also shows us other important things such as: - the proportion of unemployment was low with a max of 11.7% being the largest value in an LSOA. On average only ~ 30% (Qualification mean = 29.91) of the population across the LSOAs had a higher level educational qualification - etc etc
+
+#### Data Visualisation - Creating your first ggplot
+
+We are going to start by walking you through the steps to create an image. It will be a complex journey but you don't have to understand everything to start with. **Don't panic**. What we are doing is replicating Chapter 1 in <https://r4ds.hadley.nz/data-visualize> called **Data Visualisation** but using our data. **The plot below is our ultimate goal**.
+
+![](/Users/jonsadler/Library/CloudStorage/OneDrive-UniversityofBirmingham/Teaching-materials/COURSES/4TH_YR/LM 40222 Quantitative methods/Outputs/BhamPlot.png)
+**Figure 4:** This is our goal graphic we are going to recreate.
+
+We'll recreate this plot step-by-step. To begin with we use the function **ggplot()**, defining a plot object that you then add layers to. The first argument of ggplot() is the dataset to use in the graph and so we add data=BhamData in into the bracket in the function call: **ggplot(data = BhamData)**. This creates our blank canvas which we layer things onto.
+
+```{r}
+ggplot(data = BhamData) # when run it we get a grey box in plot window (bottom left)
+```
+
+Next up we add in the mapping argument of the **ggplot()** function. This defines which variable in our dataset we are to map and also to visual properties (**aesthetics**) of your plot. The mapping argument uses **aes()** function, and the x and y arguments of **aes()** tell ggplot which variables to map to the x and y axes. To start with we go for using  % with higher level qualifications X axis and the % of people Unemployed on Y. Notice that we opt for % Unemployed on Y as we might reasonably expect unemployments to be linked to qualifications. What we are saying here is the % of people Unemployed is a likely **response** which is **dependent** on qualification levels. We call the X axis variable either an **independent** or **explanatory** variable. I prefer using response and explanatory because it makes more sense to me but you can go with whatever works for you, with one stipulation: **The Y axis variable should always be your response or dependent variable**. 
+
+```{r}
+ggplot(
+  data = BhamData,
+  mapping = aes(x = Qualification, y = Unemployed))
+```
+
+You can see it has created the canvas for the plot but the data points are missing but it does have labels. R (via ggplot) creates the labels automatically using the column names as labels.
+
+We add the data by selecting a **geom** or the geometrical object that a plot uses to represent data. All geometric objects in ggplot2 start with **geom**. People often  describe plots by the type of geom that the plot uses. For example, bar charts use bar geoms **geom_bar()**, line charts use line geoms **geom_line()**, boxplots use boxplot geoms **geom_boxplot()**, scatterplots use point geoms **geom_point()**, and so on. Because we are displaying two variables as an XY plot we use will use **geom_point()**. **Notice to add this we put a **+** sign at the end of the last line in the code which tells ggplot another command is coming, them we add the new command, in this case **geom_point**. It this way we build up layers on the graphics canvas.  
+
+```{r}
+ggplot(
+  data = BhamData,
+  mapping = aes(x = Qualification, y = Unemployed)) + geom_point()
+```
+
+Now we have a scatterplot that shows our data points. If you count them you'll find 659 points which relate to the 659 LSOAs in our data which also is the number of rows in the dataset.
+
+#### [TASK 1: What does this tell us about the relationship between unemployed people and their eductional level [~ 5 min].]{style="color:red;"}
+
+Remember there are four data sources of data for each individual dot (or LSOA), we are displaying just two of them. As a result, this plot does not represent a full depiction on the relationships between the variables. How, for example, are the levels of education and unemployment affected by ethnicity or household overcrowding? To achieve this we need to modify the **aes()** of the **geom**. We do this by adding a **colour** to the dots. We allocate the colour to another variable, in this case *White_British**.
+
+```{r}
+ggplot(
+  data = BhamData,
+  mapping = aes(x = Qualification, y = Unemployed, colour = White_British)) + geom_point()
+```
+
+This adds a further layer onto the plot where the % of white British residents is mapped. When a continuous variable is mapped to an aesthetic, ggplot automatically assigns a graded value to the aesthetic (here a graded blue color by default). It operates slight differently with a categorical variable (see your follow on work below!)
+
+We can invert the colours so darker colours represent LSOAs with higher proportions of white British residents.
+
+```{r}
+ggplot(
+  data = BhamData,
+  mapping = aes(x = Qualification, y = Unemployed, colour = White_British)) +
+  geom_point() +
+  scale_colour_gradient(low = "lightblue", high = "darkblue")
+```
+It isn't the clearest of patterns. If we move our colour **aes()** from the *global* aesthetic and add it the **geom**, then we can use both **size and colour** to represent the proportion of White_British in the populations of LSOAs.
+
+```{r}
+ggplot(
+  data = BhamData,
+  mapping = aes(x = Qualification, y = Unemployed)) +
+  geom_point(aes(size = White_British, colour = White_British)) +
+  scale_colour_gradient(low = "lightblue", high = "darkblue") 
+```
+Does this help clarify a noisy picture! What do you think? 
+
+To depict the shape of the relationship we can add a 'best fit' line through the data. We do this by adding new **geom** as a layer on top of our point geom: using **geom_smooth()**. And we will specify that we want to draw the line of best fit based on a linear model with method = **"lm"**.
+
+```{r}
+ggplot(
+  data = BhamData,
+  mapping = aes(x = Qualification, y = Unemployed)) +
+  geom_point(aes(size = White_British, colour = White_British)) +
+  scale_colour_gradient(low = "lightblue", high = "darkblue") +
+  geom_smooth(method = "lm")
+```
+ggplot automatically fits a straight line to the data and plots the 95% confidence intervals (CIs) around the line. Notice that the width of CIs increases where there are fewer data points. Well discuss why these things happen later in the module. We probably should change the line colour to make it a little more visible by adding **colour=darkgrey** to **geom_smooth()** function.
+
+```{r}
+ggplot(data = BhamData, mapping = aes(x = Qualification, y = Unemployed)) +
+  geom_point(aes(size = White_British, colour = White_British)) +
+  scale_colour_gradient(low = "lightblue", high = "darkblue") +
+  geom_smooth(method = "lm", color = "darkgrey")
+```
+Looks a bit more like the figure we were aiming at. We finalise it by adding new labels for the axes, legends and a title using the **labs()** function.
+
+```{r}
+ggplot(data = BhamData, mapping = aes(x = Qualification, y = Unemployed)) +
+  geom_point(aes(size = White_British, colour = White_British)) +
+  scale_colour_gradient(low = "lightblue", high = "darkblue") +
+  geom_smooth(method = "lm", color = "grey") +
+  labs(
+    title = "Educational attainment and unemployment levels in Birmingham (LSOAs)",
+    subtitle = "Links to ethnicity",
+    x = "Education attainment (% level 4 or above)", y = "Levels of Unemployment (%)",
+    color = "White British (%)", size = "White British (%)")
+```
+We now have the plot. 
+
+#### [TASK 2: How does ethnicity link to unemployment and educational levels? Make a few notes describing the relationship [~ 5 min].]{style="color:red;"}
+
+It plot be further improved but are happy with it for now so we save it. You can do this manually using the **export** option in **Plots** the output/input window bottom right) or code it directly. I want it in my codefiles directory so I direct it there. **Your paths will differ so you need to amend the code accordingly**. To do this we just pipe the plot into and object (I called it "BhamPlot").
+
+```{r}
+BhamPlot <- ggplot(data = BhamData, mapping = aes(x = Unemployed, y = Qualification)) +
+  geom_point(aes(size = White_British, colour = White_British)) +
+  scale_colour_gradient(low = "lightblue", high = "darkblue") +
+  geom_smooth(method = "lm", color = "grey") +
+  labs(
+    title = "Educational attainment and unemployment levels in Birmingham (LSOAs)",
+    subtitle = "Links to ethnicity",
+    x = "Education attainment (% level 4 or above)", y = "Levels of Unemployment (%)",
+    color = "White British (%)", size = "White British (%)")
+```
+
+And save it is using the **ggsave()** function, setting the parameters we need.
+
+```{r}
+ggsave(
+  filename = "/Users/jonsadler/Library/CloudStorage/OneDrive-UniversityofBirmingham/Teaching-materials/COURSES/4TH_YR/LM 40222 Quantitative methods/Outputs/BhamPlot.png", 
+  plot = BhamPlot,  # This is the name we gave the plot. Remember to remove the quotes around BhamPlot
+  width = 965, 
+  height = 650, 
+  dpi = 150, 
+  units = "px")
+```
+
+#### Data exploration
+We will start by considering how we can visualise **distributions** in data. How we do this depends on the type of variable, categorical or numerical: 
+
+- A variable is categorical if it can only take one of a small set of values. To examine the distribution of a categorical variable, you can use a bar chart. The height of the bars displays how many observations occurred with each x value. 
+- A variable is numerical (or quantitative) if it can take on a wide range of numerical values, and it is sensible to add, subtract, or take averages with those values. Numerical variables can be continuous or discrete.
+
+We know from looking at the structure of our data that it is numerical; remember <dbl> categorization when we used **glimpse** to look at the data? To examine the distribution of these types of data we use **geom_histogram**. Notice here that we are shortening the ggplot code by adding the aesthetics to the ggplot() call and dropping out some of the other commands (e.g. mapping etc).
+
+```{r}
+ggplot(BhamData, aes(x = Qualification)) +
+  geom_histogram(binwidth = 10)
+```
+
+Urgh this looks ugly. This is because we have percentage data so to see the full range we need to increase the number of bins to say 1 (gives us a maximum of 100 as they are percentages).
+
+```{r}
+ggplot(BhamData, aes(x = Qualification)) +
+  geom_histogram(binwidth = 1)
+```
+
+Maybe a little too many but it does indicate there might be a few extreme points in our data at the top end of LSOAs for educational outcomes. Perhaps 5 would close off the gaps.
+
+```{r}
+ggplot(BhamData, aes(x = Qualification)) +
+  geom_histogram(binwidth = 5)
+```
+
+This looks better. We can see from this that the data not normally distributed as they are clumped (or skewed at the bottom end of the distribution centred around 25).
+
+We can also use a density plot is a smoothed-out version of a histogram and a practical alternative, particularly for continuous data that comes from an underlying smooth distribution using **geom_density()**. Although they show fewer details than a histogram they are useful for understanding the shape of a distribution and make it easier to 'see' the shape of the distribution, particularly with respect to modes and skewness.
+
+```{r}
+ggplot(BhamData, aes(x = Qualification)) +
+  geom_density()
+```
+We can see these data are very skewed to the right (or positively skewed) (Figure 5). Yes I know the lump is on the left but this is about the long tail on the distribution which does sit to the right! 
+
+![](/Users/jonsadler/Library/CloudStorage/OneDrive-UniversityofBirmingham/Teaching-materials/COURSES/4TH_YR/LM 40222 Quantitative methods/Images/skewness.png)
+**Figure 5**: Skewness in relation to the mean and median.
+
+And read this: https://en.wikipedia.org/wiki/Skewness
+
+Like all geoms you can add different aesthetics to change line colour, line widths and so on and also add labels etc. They are described here in detail: <https://ggplot2.tidyverse.org/reference/geom_density.html>
+
+#### [TASK 3: Try creating some new code that adds labels the X variable axis not the Y and a title [~ 5 min].]{style="color:red;"}
+
+Another way to visual distributions in to use a **q-qplot**. A Q-Q plot, short for “quantile-quantile” plot, is used to assess whether or not a set of data potentially came from some theoretical distribution. In most cases, this type of plot is used to determine whether or not a set of data follows a normal distribution.
+
+If the data are normally distributed, the points in a Q-Q plot will lie on a straight diagonal line. Conversely, if the points deviate significantly from the straight diagonal line, then it’s less likely that the data is normally distributed. We know from out histogram that our qualification data are skewed so it is unlikely to be normally distributed. We address why this might be important in later classes so don't worry about it now.
+
+In ggplot the we use you can use the **stat_qq()** and **stat_qq_line()** functions as follows:
+```{r}
+ggplot(BhamData, aes(sample=Qualification)) +
+  stat_qq() + 
+  stat_qq_line()
+```
+Before talk about the plot lets look at the code. First notice we have to tell ggplot what the sample of data is using **sample=**. We use the Qualification column. The **stat_qq()** is function that plots the data; the **stat_qq_line()** plots the line. This line is a line that indicates normality. So had our data been normally distributed it would sit along the line. It doesn't but we expected that given the skew we saw in the histogram. To show what a normal data set might look line we'll create one. **You do not need to understand this code right now but we are using R's simulation tools to create data to make a point about data normality**.
+```{r}
+#make this example reproducible
+set.seed(1)
+
+#create some fake data that follows a normal distribution for 200 datapoints
+df <- data.frame(col=rnorm(200))
+
+#create Q-Q plot
+ggplot(df, aes(sample=col)) +
+  stat_qq() + 
+  stat_qq_line()
+```
+You can see from this plot of fake data that our data points sit along the line which depicts normality. The little excursions at the top and bottom of the line are not an issue. You can plot a histogram of density curve to see how normally distributed data looks like using those tools.
+
+#### [TASK 4: Try to create a histogram and density plot of the new data we've just created.[~ 5 min]]{style="color:red;"}
+
+**HINT:** Check the dataframe using the **str** or **glimpse** functions. Here is a schematic of the code you need. Remember it is called **df**.
+
+Histogram:
+
+The code will look like this [Check the syntax you do not need the quote marks]:
+
+ggplot(data=**'add in the dataframe name'**, aes(x=**'add in the column name'**)) +
+  geom_histogram(binwidth = .25)
+
+Density plot:
+
+ggplot(data=**'add in the dataframe name'**, aes(x=**'add in the column name'**)) +
+  geom_density()
+
+We have gone about as far we can looking at the variation and distribution of our numerical data columns but there is on thing left to do. That is consider whether we have any **outliers** or points that sit out the expected distributions. **Boxplots** are excellent for this but we cannot easily use them for continuous numerical data; they work better for categorical data but we can use them for continuous data. 
+```{r}
+ggplot(BhamData, aes(x = 1, y = Qualification)) +
+  geom_boxplot() +
+  scale_x_continuous(breaks = NULL) # we need this new code otherwise R will add a 'fake' x axis!
+```
+Boxplots (Figure 6) are very useful for visualising the distribution of data. The black in the middle is the median (not the mean), the box around it shows the upper (3rd) quartile (75%) and the lower (1st) quartile (25%) and the whiskers or lines are the maxima and minima. The dots are potential outliers. They may not be true outliers in the statistical sense. We'll discover how to be sure of this in later workshops.
+
+![](/Users/jonsadler/Library/CloudStorage/OneDrive-UniversityofBirmingham/Teaching-materials/COURSES/4TH_YR/LM 40222 Quantitative methods/Images/boxplot.png)
+
+**Figure 6**: Explanation of the elements of a boxplot.
+
+A boxplot relates to the density plot and a histogram nicely (Figure 7).
+![](/Users/jonsadler/Library/CloudStorage/OneDrive-UniversityofBirmingham/Teaching-materials/COURSES/4TH_YR/LM 40222 Quantitative methods/Images/boxplot_density.png)
+**Figure 7**: A comparison of a boxplot, density plot and histogram.
+
+#### [TASK 5: Spend some time creating histograms, q-qplots and boxplots for the remaining columns in the BhamData (White_British, Unemployed and Qualification) [~ 20 min]]{style="color:red;"}
+**HINT:** It is 9 separate plots. If you run of time complete it later.
+
+So far we have worked with only one column of data we call this **univariate** data you can compare more columns of data to look for patterns, so called **multivariate** data. We have already done that using 3 columns (Qualifications, Unemployment and Ethnicity) so you know how to do this already! If this is overwhelming - don't worry - we'll revisit this material in many different ways. **It will become easier!**.
+
+#### Class Exercise: The famous gapminder dataset
+Back in 2006 Hans Rosling, a Swedish medic, gave a TED talk entitled "The best stats you've ever seen". In this talk he presented global economic and health data on 142 countries dating to 2007. He created this graphic (or something very similar): 
+
+```{r, echo=FALSE}
+ggplot(Gap2007, aes(x=gdpPercap, y=lifeExp)) +
+  geom_point(aes(size=pop, colour=continent)) + 
+  labs(title = "Global GDP and life expectancy pattern",
+       subtitle = "2007",
+    x = "Gross domestic product (US $)", y = "Life expectency (years)",
+    color = "Continent", size = "Population size")
+```
+
+You can see the resemblance to the plot we produced above. The data are in a package called **gapminder**, so let's install it and look at it. **gapminder** holds global economic and health data from 1952 to 2007. 
+
+```{r}
+# install.packages("gapminder") - I have made this a comment as it's already installed on my system. 
+library(gapminder)
+```
+We use **glimpse** to look at it:
+```{r}
+glimpse(gapminder)
+```
+We see is comprises 1704 rows / observations of data and 6 variables or columns. Look carefully at the columns.
+
+Recreate the plot above. To do so you need to (see Table 1 below):
+
+- map gdpPercap to the **x**-aesthetic of the points
+- map lifeExp to the **y**-aesthetic of the points 
+- map pop onto the **size** aesthetic
+- map continent onto **colour** aesthetic
+
+![](/Users/jonsadler/Library/CloudStorage/OneDrive-UniversityofBirmingham/Teaching-materials/COURSES/4TH_YR/LM 40222 Quantitative methods/Images/gapminder_table.png) 
+
+**Table 1**: Variable, aesthetics and geoms needed to recreate the figure.
+
+One task we need carry out before we do this is to select a year, in this case 2007. We'll use the **filter()** function from the **tidyverse** package to do that. The command is:
+```{r}
+Gap2007 <- gapminder %>% 
+  filter(year == 2007)
+```
+Where,
+
+- **Gap2007** is the object or our new dataframe
+- **gapminder** is the initial unfiltered dataframe
+- **%>%** is known as a 'piping operator' that takes instructions from the function call to the right of the symbol. **Note you can use these in sequence to make more complex queries of dataframes**.
+- **filter()** is the function (from dplyr package in tidyverse)
+- **year==2007** is the command to look for 2007 only. Note there are no quotes because year is a numeric variable (see glimpse output above) and we use **==** to mean match exactly.
+
+Now you have a new dataframe called **Gap2007** which you can use to generate the plot.
+
+**HINT:** Use the code from our plot above to guide you (i.e. the one we called **BhamPlot**); you only need to change the dataframe name, variable names and alter the labels.
+
+### Follow on work 
+
+1. Read chapter 1 of <https://r4ds.hadley.nz/data-visualize> which we replicated with our plotting exercise today. 
+2. Finish the class exercise if you didn't manage to do so in class.
+
+----
+Jon Sadler Oct 2024

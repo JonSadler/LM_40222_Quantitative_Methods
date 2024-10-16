@@ -1,0 +1,8 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+The CDRC supports an open data service which is free for anyone to access but similar to other open data sources, like the *Office for National Statistics (ONS)*, you have to register first - make sure you remember you password! The service can be accessed by visiting https://data.cdrc.ac.uk/. 
+
+You can access the data for today directly from the CDRC portal but to simplify things to start with I have downloaded the data for you. I preprocessed in a separate script called (week1Import_tidyScript.R - a note to remind me not you!). 

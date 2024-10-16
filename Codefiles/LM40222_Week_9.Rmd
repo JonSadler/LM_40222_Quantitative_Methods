@@ -1,0 +1,30 @@
+---
+title: "Hierachical and Mixed Modelling in R: dealing with data dependancies"
+output: html_notebook
+---
+
+Outline:
+
+This is the final workshop where we'll explore the options available to you if you have data with dependencies (i.e. nested designs, designs with spatial or temporal patterns. Recall that a key assumption in most statistical modelling is that the measured data points are independent of each other. This workshop addresses how to deal with heterogeneities in your designs. Put another way, it shows how to analyse data where you do have dependencies in your data.
+
+Please do a little reading to familiarise yourself with the idea of dependencies. If you have been careful when designing your sample framework then you should not need to use these methods, but there will be occasions due to unforeseen circumstances, or when you analyse secondary datasets where these techniques will be essential modelling tools. 
+
+Essential reading:
+
+ 
+
+Learning Outcomes:
+
+By the end of this session you will be able to:
+• Explore data to look for dependencies and potential autocorrelative structures ;
+• Use straightforward linear mixed-effects models to resolve the potential issues;
+• Anything more complex and we will need to discuss options and approaches!
+
+Load/install libraries
+
+
+Set working directory
+```{r}
+setwd("/Users/jonsadler/Library/CloudStorage/OneDrive-UniversityofBirmingham/Teaching-materials/COURSES/4TH_YR/LM 40222 Quantitative methods/Codefiles/Week 9")
+```
+

@@ -1,0 +1,30 @@
+---
+title: "Introduction to Generalised Linear Models (GLMs)"
+subtitle: "Week 8"
+output: html_notebook
+---
+Outline:
+
+Please do a little reading to familiarise yourself with generalised linear and generalised additive models. This is the point at which most of you will end up analytically as these models have error structures that support interval, count (0 - infinity) and presence-absence or ratio data (either real ratios or percentages) using Gaussian, Poisson and Logistic (or Binomial) approaches. We will examine all of them in the workshop.
+
+Essential reading:
+
+TBC
+
+Learning Outcomes:
+
+1. Outline the four main error structures associated with GLMs;
+
+2. Establish when to use them during analyses;
+
+3. Validate their outcomes.
+
+
+Load/install libraries
+
+
+Set Working Directory
+```{r}
+setwd("/Users/jonsadler/Library/CloudStorage/OneDrive-UniversityofBirmingham/Teaching-materials/COURSES/4TH_YR/LM 40222 Quantitative methods/Codefiles/Week 8")
+```
+

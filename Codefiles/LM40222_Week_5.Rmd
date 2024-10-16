@@ -1,0 +1,33 @@
+---
+title: "Testing for differences between groups of things"
+subtitle: "Week 5"
+output: html_notebook
+---
+Outline:
+
+In this session you will be introduced to the statistical methods for comparing groups of entities using R. Basically, we are talking about T tests, ANOVA and their non-parametric cousins: U-tests and Kruskal-Wallis tests.
+
+Essential reading:
+
+TBC
+
+Learning outcomes:
+
+At the end of this section you will be able to use R to:
+
+To explore data to establish whether it is appropriate to use parametric or non-parametric tests
+Run T-test and its non-parametric cousin a U-tes (also known as a Wilcoxon test)
+Run single factor ANOVA and its non-parametric cousin, the Kruskal-Wallis test
+Run 2-way ANOVA.
+Finally, we'll introduce ourselves to using R's inbuilt validation plots to assess and validate our models.
+
+
+
+
+Load/install libraries
+
+Set working directory
+```{r}
+setwd("/Users/jonsadler/Library/CloudStorage/OneDrive-UniversityofBirmingham/Teaching-materials/COURSES/4TH_YR/LM 40222 Quantitative methods/Codefiles/Week 5")
+```
+

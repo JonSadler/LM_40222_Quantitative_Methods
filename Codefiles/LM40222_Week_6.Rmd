@@ -1,0 +1,37 @@
+---
+title: "R Notebook"
+subtitle: "Week 6"
+output: html_notebook
+---
+
+Outline:
+
+This week we will explore linear regression in R. A fundamental understanding of this is critical for the more complex regression techniques we we explore in the coming weeks. We will cover:
+
+1. Basic theory of linear regression;
+2. Its application in R using simple data sets;
+3. How to understand the regression coefficient outputs;
+4. How to validate the regression models.
+
+Essential Reading:
+
+TBC
+
+Session Aim:
+To understand linear regression and its application in R
+
+Learning Outcomes:
+
+Using R for lm() function to:
+
+Undertake linear regression in R
+Evaluate the summary results table
+Use the plot() function to validate the model
+ 
+Load/install libraries
+
+Set working directory
+```{r}
+setwd("/Users/jonsadler/Library/CloudStorage/OneDrive-UniversityofBirmingham/Teaching-materials/COURSES/4TH_YR/LM 40222 Quantitative methods/Codefiles/Week 6")
+```
+

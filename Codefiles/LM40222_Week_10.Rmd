@@ -1,0 +1,26 @@
+---
+title: "Using internet data sources"
+subtitle: "Week 10"
+output: html_notebook
+---
+
+Outline:
+
+In this session, we will explore the opportunities that internet sources provide to geographers for generating new datasets from internet data (e.g. social media) by using R to scrape APIs.
+
+Essential Reading:
+
+TBC
+
+Learning Outcomes:
+
+TBC
+
+Load/install libraries
+
+
+Set the Working directory
+```{r}
+setwd("/Users/jonsadler/Library/CloudStorage/OneDrive-UniversityofBirmingham/Teaching-materials/COURSES/4TH_YR/LM 40222 Quantitative methods/Codefiles/Week 10")
+```
+

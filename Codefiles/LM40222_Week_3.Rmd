@@ -1,0 +1,29 @@
+---
+title: "Visualising spatial data and creating maps in R"
+subtitle: "Week 3"
+output: html_notebook
+---
+Outline:
+
+In this session, you will be introduced to how to use R to manipulate spatial data (e.g. raster data and polygon data such as shapefiles), the importance of coordinate reference systems (CRSs) and how these data can be used to generate maps.
+
+Essential reading:
+
+TBC
+
+Learning outcomes:
+
+At the end of this section you will be able to use R to:
+
+- Import and manipulate raster and polygon data;
+- Change CRSs to ensure your maps accurately represent the spatial data they are showing;
+- Create basic maps to show spatial patterns in census and environmental data.
+
+Load/install libraries
+
+
+Set our working directory for this week's workshop.
+```{r}
+setwd("/Users/jonsadler/Library/CloudStorage/OneDrive-UniversityofBirmingham/Teaching-materials/COURSES/4TH_YR/LM 40222 Quantitative methods/Codefiles/Week 3")
+```
+

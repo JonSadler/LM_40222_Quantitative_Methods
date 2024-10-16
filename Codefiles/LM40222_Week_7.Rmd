@@ -1,0 +1,31 @@
+---
+title: "R Notebook"
+subtitle: "Week 7"
+output: html_notebook
+---
+
+Outline:
+
+This week we are going build upon the regression framework we introduced last week and consider how to manage analyses where you have multiple explanatory variables. The session is structured:
+
+Introduction: Outline of multiple linear regression (some basic maths) 
+PART ONE: Additive multiple Linear Regression in R
+PART TWO: Multiplicative multiple Linear Regression in R
+PART THREE: Model selection / parsimony [how do we know which combination of explanatory variable is best?]
+
+Essential Readings:
+
+TBC
+
+Learning Outcomes:
+
+TBC
+
+Load/install libraries
+
+
+Set Working Directory
+```{r}
+setwd("/Users/jonsadler/Library/CloudStorage/OneDrive-UniversityofBirmingham/Teaching-materials/COURSES/4TH_YR/LM 40222 Quantitative methods/Codefiles/Week 7")
+```
+
