@@ -366,7 +366,7 @@ ggplot(BhamData, aes(x = 1, y = Qualification)) +
 ```
 Boxplots (Figure 6) are very useful for visualising the distribution of data. The black in the middle is the median (not the mean), the box around it shows the upper (3rd) quartile (75%) and the lower (1st) quartile (25%) and the whiskers or lines are the maxima and minima. The dots are potential outliers. They may not be true outliers in the statistical sense. We'll discover how to be sure of this in later workshops.
 
-![](//Users/jonsadler/Documents/GitHub/Teaching/LM_40222_Quantitative_Methods/Images/boxplot.png)
+![](/Users/jonsadler/Documents/GitHub/Teaching/LM_40222_Quantitative_Methods/Images/boxplot.png)
 
 **Figure 6**: Explanation of the elements of a boxplot.
 
