@@ -11,7 +11,8 @@ This week we are going to make a start on data visualisation and exploration. To
     data.
 
 It is a key part of the important task of communicating your findings to the wider world in a clear and reproducible manner (Figure 1).
-![](/Users/jonsadler/Library/CloudStorage/OneDrive-UniversityofBirmingham/Teaching-materials/COURSES/4TH_YR/LM 40222 Quantitative methods/Images/Communicate_data.jpg)
+![](/Users/jonsadler/Documents/GitHub/Teaching/LM_40222_Quantitative_Methods/Images/Communicate_data.jpg)
+
 **Figure 1:** The data analysis cycle.
 
 This is long process so we will start with the basics which we will extend and reinforce in the coming workshops. Today we going to use the dataset you created at the end of the last workshop, supplemented by some data that are available in the basic installation of R. The aim is to use the ggplot2 package to do this work and we will use a range of different types of graphs to illustrate how to represent data structure and the relationship between columns of data in our dataframes. We will introduce you to elements of base R graphics as the workshops progress. 
@@ -58,7 +59,7 @@ read it: <https://ggplot2-book.org/>
 
 It works by layering up components as shown below in Figure 2. This is a screenshot from Wickham et al. (2024) i.e. the book list in the URL above. The text describes the elements better than I could.
 
-![](/Users/jonsadler/Library/CloudStorage/OneDrive-UniversityofBirmingham/Teaching-materials/COURSES/4TH_YR/LM 40222 Quantitative methods/Images/ggplot_grammar.jpg)
+![](/Users/jonsadler/Documents/GitHub/Teaching/LM_40222_Quantitative_Methods/Images/ggplot_grammar.jpg)
 **Figure 2:** ggplot2 core structural elements.
 
 **Do not stress if this all appears impenetrable. We will unpack it in today's workshop and reinforce your understanding in subsequent sessions as the module progresses**. Let's make a start on today's activities.
@@ -95,7 +96,7 @@ library("tidyverse") # don't forget to use the quote marks!
     screenshot of this structure. **You need to figure out a strategy
     that works for you**.
 
-![](/Users/jonsadler/Library/CloudStorage/OneDrive-UniversityofBirmingham/Teaching-materials/COURSES/4TH_YR/LM 40222 Quantitative methods/Images/Mydirectory_screen.png)
+![](/Users/jonsadler/Documents/GitHub/Teaching/LM_40222_Quantitative_Methods/Images/Mydirectory_screen.png)
 **Figure 3:** Jon's directory structure.
 
 4.  **Create your new script by new file clicking on the green cross at
@@ -114,13 +115,14 @@ library("tidyverse") # don't forget to use the quote marks!
 Let's starting by loading at your dataset. Mine is now located in my data directory in the Birmingham Census 2021 MSOA subdirectory. I am going to load it directly from there using the appropriate path. It's long so I am setting my WD to there manually as described above, copying the path using **getwd()** and adding the path and filename to my **read_csv()** function call:
 
 ```{r}
-BhamData <- read_csv("/Users/jonsadler/Library/CloudStorage/OneDrive-UniversityofBirmingham/Teaching-materials/COURSES/4TH_YR/LM 40222 Quantitative methods/Data/Birmingham Census 2021 MSOA/practical_data.csv") # notice the use of quotes.
+BhamData <- read_csv("/Users/jonsadler/Documents/GitHub/Teaching/LM_40222_Quantitative_Methods/Data/Birmingham Census 2021 MSOA/practical_data.csv") # notice the use of quotes.
 ```
 When loaded it will appear in the "Environment" window (top right). I called it "BhamData". Let's revise how it is structured. This time we'll use **glimpse()** rather than **str**. But why not run them both and compare the differences.
 
 I called the imported data **BhamData** you can call it whatever you want but as we progress remember where my code states **BhamData** you need to replace it with **your dataframe name** if you called it something else! We need to revisit the structure of the data before we start plotting things.
+
 ```{r}
-glimpse((BhamData))
+glimpse(BhamData)
 ```
 
 We can see that dataset has 659 rows which are the 659 lower layer super output areas in the City of Birmingham and 5 columns (see last week's Appendix for full descriptions of the data metadata/explanations):
@@ -147,7 +149,7 @@ Examining the Max data we see all are less than 100%. It also shows us other imp
 
 We are going to start by walking you through the steps to create an image. It will be a complex journey but you don't have to understand everything to start with. **Don't panic**. What we are doing is replicating Chapter 1 in <https://r4ds.hadley.nz/data-visualize> called **Data Visualisation** but using our data. **The plot below is our ultimate goal**.
 
-![](/Users/jonsadler/Library/CloudStorage/OneDrive-UniversityofBirmingham/Teaching-materials/COURSES/4TH_YR/LM 40222 Quantitative methods/Outputs/BhamPlot.png)
+![](/Users/jonsadler/Documents/GitHub/Teaching/LM_40222_Quantitative_Methods/Outputs/BhamPlot.png)
 **Figure 4:** This is our goal graphic we are going to recreate.
 
 We'll recreate this plot step-by-step. To begin with we use the function **ggplot()**, defining a plot object that you then add layers to. The first argument of ggplot() is the dataset to use in the graph and so we add data=BhamData in into the bracket in the function call: **ggplot(data = BhamData)**. This creates our blank canvas which we layer things onto.
@@ -261,7 +263,7 @@ And save it is using the **ggsave()** function, setting the parameters we need.
 
 ```{r}
 ggsave(
-  filename = "/Users/jonsadler/Library/CloudStorage/OneDrive-UniversityofBirmingham/Teaching-materials/COURSES/4TH_YR/LM 40222 Quantitative methods/Outputs/BhamPlot.png", 
+  filename = "/Users/jonsadler/Documents/GitHub/Teaching/LM_40222_Quantitative_Methods/Outputs/BhamPlot.png", 
   plot = BhamPlot,  # This is the name we gave the plot. Remember to remove the quotes around BhamPlot
   width = 965, 
   height = 650, 
@@ -306,7 +308,7 @@ ggplot(BhamData, aes(x = Qualification)) +
 ```
 We can see these data are very skewed to the right (or positively skewed) (Figure 5). Yes I know the lump is on the left but this is about the long tail on the distribution which does sit to the right! 
 
-![](/Users/jonsadler/Library/CloudStorage/OneDrive-UniversityofBirmingham/Teaching-materials/COURSES/4TH_YR/LM 40222 Quantitative methods/Images/skewness.png)
+![](/Users/jonsadler/Documents/GitHub/Teaching/LM_40222_Quantitative_Methods/Images/skewness.png)
 **Figure 5**: Skewness in relation to the mean and median.
 
 And read this: https://en.wikipedia.org/wiki/Skewness
@@ -364,12 +366,12 @@ ggplot(BhamData, aes(x = 1, y = Qualification)) +
 ```
 Boxplots (Figure 6) are very useful for visualising the distribution of data. The black in the middle is the median (not the mean), the box around it shows the upper (3rd) quartile (75%) and the lower (1st) quartile (25%) and the whiskers or lines are the maxima and minima. The dots are potential outliers. They may not be true outliers in the statistical sense. We'll discover how to be sure of this in later workshops.
 
-![](/Users/jonsadler/Library/CloudStorage/OneDrive-UniversityofBirmingham/Teaching-materials/COURSES/4TH_YR/LM 40222 Quantitative methods/Images/boxplot.png)
+![](//Users/jonsadler/Documents/GitHub/Teaching/LM_40222_Quantitative_Methods/Images/boxplot.png)
 
 **Figure 6**: Explanation of the elements of a boxplot.
 
 A boxplot relates to the density plot and a histogram nicely (Figure 7).
-![](/Users/jonsadler/Library/CloudStorage/OneDrive-UniversityofBirmingham/Teaching-materials/COURSES/4TH_YR/LM 40222 Quantitative methods/Images/boxplot_density.png)
+![](/Users/jonsadler/Documents/GitHub/Teaching/LM_40222_Quantitative_Methods/Images/boxplot_density.png)
 **Figure 7**: A comparison of a boxplot, density plot and histogram.
 
 #### [TASK 5: Spend some time creating histograms, q-qplots and boxplots for the remaining columns in the BhamData (White_British, Unemployed and Qualification) [~ 20 min]]{style="color:red;"}
@@ -382,11 +384,11 @@ Back in 2006 Hans Rosling, a Swedish medic, gave a TED talk entitled "The best s
 
 ```{r, echo=FALSE}
 ggplot(Gap2007, aes(x=gdpPercap, y=lifeExp)) +
-  geom_point(aes(size=pop, colour=continent)) + 
+  geom_point(aes(size=pop_by_mil, colour=continent)) + 
   labs(title = "Global GDP and life expectancy pattern",
        subtitle = "2007",
     x = "Gross domestic product (US $)", y = "Life expectency (years)",
-    color = "Continent", size = "Population size")
+    color = "Continent", size = "Population size (millions)")
 ```
 
 You can see the resemblance to the plot we produced above. The data are in a package called **gapminder**, so let's install it and look at it. **gapminder** holds global economic and health data from 1952 to 2007. 
@@ -408,7 +410,7 @@ Recreate the plot above. To do so you need to (see Table 1 below):
 - map pop onto the **size** aesthetic
 - map continent onto **colour** aesthetic
 
-![](/Users/jonsadler/Library/CloudStorage/OneDrive-UniversityofBirmingham/Teaching-materials/COURSES/4TH_YR/LM 40222 Quantitative methods/Images/gapminder_table.png) 
+![](/Users/jonsadler/Documents/GitHub/Teaching/LM_40222_Quantitative_Methods/Images/gapminder_table.png) 
 
 **Table 1**: Variable, aesthetics and geoms needed to recreate the figure.
 
@@ -424,6 +426,15 @@ Where,
 - **%>%** is known as a 'piping operator' that takes instructions from the function call to the right of the symbol. **Note you can use these in sequence to make more complex queries of dataframes**.
 - **filter()** is the function (from dplyr package in tidyverse)
 - **year==2007** is the command to look for 2007 only. Note there are no quotes because year is a numeric variable (see glimpse output above) and we use **==** to mean match exactly.
+
+We also need to modify the population numbers for the captions on the population size legend are more comprehensible. 
+```{r}
+Gap2007 <- Gap2007 %>%
+  dplyr::mutate(pop_by_mil = pop / 1000000) # mutate is from dplyr
+```
+Where,
+- **Gap2007** is the dataframe. Note we overwrite it by mapping Gap2007 <- Gap2007
+- **mutate(pop_by_mil=pop/1000000)** takes the data from the pop column and divides it by 1000000 to standardize the numbers to millions, then writes that to a new column called "pop_by_mil".
 
 Now you have a new dataframe called **Gap2007** which you can use to generate the plot.
 
