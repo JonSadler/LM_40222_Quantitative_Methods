@@ -117,6 +117,12 @@ Let's starting by loading at your dataset. Mine is now located in my data direct
 ```{r}
 BhamData <- read_csv("/Users/jonsadler/Documents/GitHub/Teaching/LM_40222_Quantitative_Methods/Data/Birmingham Census 2021 MSOA/practical_data.csv") # notice the use of quotes.
 ```
+**NOTE: this is the link to my working directory structure. You will need to use your path**. So:
+
+```{r}
+BhamData <- read_csv("add your path in here between the quotes")
+```
+
 When loaded it will appear in the "Environment" window (top right). I called it "BhamData". Let's revise how it is structured. This time we'll use **glimpse()** rather than **str**. But why not run them both and compare the differences.
 
 I called the imported data **BhamData** you can call it whatever you want but as we progress remember where my code states **BhamData** you need to replace it with **your dataframe name** if you called it something else! We need to revisit the structure of the data before we start plotting things.
@@ -143,7 +149,7 @@ We can also see that the data type are double (i.e. decimal numbers) as shown by
 summary(BhamData)
 ```
 
-Examining the Max data we see all are less than 100%. It also shows us other important things such as: - the proportion of unemployment was low with a max of 11.7% being the largest value in an LSOA. On average only ~ 30% (Qualification mean = 29.91) of the population across the LSOAs had a higher level educational qualification - etc etc
+Examining the Max data we see all are less than 100%. It also shows us other important things such as: - the proportion of unemployment was low with a max of 11.7% being the largest value in an LSOA. On average only ~ 30% (Qualification mean = 29.91) of the population across the LSOAs had a higher level educational qualification - etc etc.
 
 #### Data Visualisation - Creating your first ggplot
 
@@ -188,7 +194,7 @@ ggplot(
   mapping = aes(x = Qualification, y = Unemployed, colour = White_British)) + geom_point()
 ```
 
-This adds a further layer onto the plot where the % of white British residents is mapped. When a continuous variable is mapped to an aesthetic, ggplot automatically assigns a graded value to the aesthetic (here a graded blue color by default). It operates slight differently with a categorical variable (see your follow on work below!)
+This adds a further layer onto the plot where the % of white British residents is mapped. When a continuous variable is mapped to an aesthetic, ggplot automatically assigns a graded value to the aesthetic (here a graded blue color by default). It operates slight differently with a categorical variable (see your follow on work below!).
 
 We can invert the colours so darker colours represent LSOAs with higher proportions of white British residents.
 
@@ -395,7 +401,7 @@ You can see the resemblance to the plot we produced above. The data are in a pac
 
 ```{r}
 # install.packages("gapminder") - I have made this a comment as it's already installed on my system. 
-library(gapminder)
+library(gapminder) # load the package.
 ```
 We use **glimpse** to look at it:
 ```{r}
@@ -405,10 +411,10 @@ We see is comprises 1704 rows / observations of data and 6 variables or columns.
 
 Recreate the plot above. To do so you need to (see Table 1 below):
 
-- map gdpPercap to the **x**-aesthetic of the points
-- map lifeExp to the **y**-aesthetic of the points 
-- map pop onto the **size** aesthetic
-- map continent onto **colour** aesthetic
+- map gdpPercap to the **x**-aesthetic of the points.
+- map lifeExp to the **y**-aesthetic of the points. 
+- map pop onto the **size** aesthetic.
+- map continent onto **colour** aesthetic.
 
 ![](/Users/jonsadler/Documents/GitHub/Teaching/LM_40222_Quantitative_Methods/Images/gapminder_table.png) 
 
@@ -417,17 +423,17 @@ Recreate the plot above. To do so you need to (see Table 1 below):
 One task we need carry out before we do this is to select a year, in this case 2007. We'll use the **filter()** function from the **tidyverse** package to do that. The command is:
 ```{r}
 Gap2007 <- gapminder %>% 
-  filter(year == 2007)
+  dplyr::filter(year == 2007) # filter function is from dplyr
 ```
 Where,
 
-- **Gap2007** is the object or our new dataframe
-- **gapminder** is the initial unfiltered dataframe
+- **Gap2007** is the object or our new dataframe.
+- **gapminder** is the initial unfiltered dataframe.
 - **%>%** is known as a 'piping operator' that takes instructions from the function call to the right of the symbol. **Note you can use these in sequence to make more complex queries of dataframes**.
-- **filter()** is the function (from dplyr package in tidyverse)
+- **filter()** is the function (from dplyr package in tidyverse).
 - **year==2007** is the command to look for 2007 only. Note there are no quotes because year is a numeric variable (see glimpse output above) and we use **==** to mean match exactly.
 
-We also need to modify the population numbers for the captions on the population size legend are more comprehensible. 
+We also need to modify the population numbers for the caption on the population size legend to maken them more comprehensible. 
 ```{r}
 Gap2007 <- Gap2007 %>%
   dplyr::mutate(pop_by_mil = pop / 1000000) # mutate is from dplyr
@@ -436,9 +442,9 @@ Where,
 - **Gap2007** is the dataframe. Note we overwrite it by mapping Gap2007 <- Gap2007
 - **mutate(pop_by_mil=pop/1000000)** takes the data from the pop column and divides it by 1000000 to standardize the numbers to millions, then writes that to a new column called "pop_by_mil".
 
-Now you have a new dataframe called **Gap2007** which you can use to generate the plot.
+Now you have a new dataframe called **Gap2007** which you can use to generate the plot.  
 
-**HINT:** Use the code from our plot above to guide you (i.e. the one we called **BhamPlot**); you only need to change the dataframe name, variable names and alter the labels.
+**HINT:** Use the code from our plot above to guide you (i.e. the one we called **BhamPlot**); you only need to change the dataframe name, variable names and alter the labels. Remember to use **pop_by_mil** instead of **pop** in the **size=** command.
 
 ### Follow on work 
 

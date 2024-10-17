@@ -13,7 +13,7 @@ https://www.nomisweb.co.uk/
 
 To ease you into the process I have download a run of datasets from the Census of 2021. The spatial grain size of the data is at the Lower layer Super Output Areas (LSOAs) level. Lower layer Super Output Areas (LSOAs) are made up of groups of Output Areas (OAs), usually four or five. They comprise between 400 and 1,200 households and have a usually resident population between 1,000 and 3,000 persons. They were first created following the 2001 and they may be modified slightly after each census. Figure 1 (below) shows the Middle Super Output Areas. These are displayed for visual clarity, each one of these (and there are 132 of them) has 4-5 LSOAs embedded within it. **Birmingham has 639 LSOAs with an average population size of 1,680 residents per LSOA**.
 
-![Figure 1: LSOAs in Birmingham](//Users/jonsadler/Documents/GitHub/Teaching/LM_40222_Quantitative_Methods/Images/Birmingham_MSOAs.png)
+![Figure 1: LSOAs in Birmingham](/Users/jonsadler/Documents/GitHub/Teaching/LM_40222_Quantitative_Methods/Images/Birmingham_MSOAs.png)
 The next few workshops in this module will these data as a case study. As the module progresses we will use datasets provided by my human geography colleagues. The data are stored in a zipfile and downloadable using the following link from my github repository:
 
 (Jon to add in the link)
@@ -48,7 +48,7 @@ To open R click on the start menu and open RStudio. You should see a screen rese
 - The **environment windows** - or if you like R's brain. This window shows the objects held in memory by the system (e.g. datafiles, vectors and so on), as well a history of things you've done, the connections you have open and lastly some tutorial resources.
 - The **output/input** window. This shows many things but the most important are the packages you have in the system, the files you are viewing (i.e. where you working directory is), the plots/graphics you might create and help options.
 
-![Figure 2: RStudio screen windows](//Users/jonsadler/Documents/GitHub/Teaching/LM_40222_Quantitative_Methods/Images/RStudio Screen Grab.png)
+![Figure 2: RStudio screen windows](/Users/jonsadler/Documents/GitHub/Teaching/LM_40222_Quantitative_Methods/Images/RStudio Screen Grab.png)
 We are going to start by setting the ***working directory**. This is so R knows where to open and save files to. It is recommended that you set the working directory to an appropriate space in your computers work space. To start with, make it the directory where you have stored the unzipped data.
 
 To set the working directory, go to the **Session** option from the top bar of RStudio, click on **Set Working Directory** then **Choose Directory** and use the search window to click through to your directory and select **Open**. 
@@ -61,8 +61,13 @@ Where, **setwd()** is the **function call**, and
 ```{r}
 setwd("/Users/jonsadler/Documents/GitHub/Teaching/LM_40222_Quantitative_Methods")
 ```
+You will need to add in your path:
 
-If you want to know where your working directory currently is then use the **getwd()** function. R will return the disk address where it is looking.
+```{r}
+setwd("Add in your path here in between the quotes")
+```
+
+If you want to know where your working directory currently is then use the **getwd()** function. R will return the disk address where it is looking. Or click on the **Files** tab on the bottom right window.
 
 ```{r}
 getwd()
@@ -73,7 +78,7 @@ If you want to see what files are in your working directly to copy a filename th
 list.files()
 ```
 ####  Loading some packages into the system
-The base installation of R has a lot of packages loaded as default. They sit in the toolbox available for instant use. But some functions are only available in different packages that are not in the base R installation. View each package as a run of tools that do things that aren't in the base toolbox. This module will use the **Tidyverse** package for many basic tasks; it includes tools for data manipulation/wrangling, creating graphics, dealing with dates and lots of other things. It was created by Hadley Wickham  and you can read about it here:
+The base installation of R has a lot of packages loaded as default. They sit in the toolbox available for instant use. But some functions are only available in different packages that are not in the base R installation. View each package as a set of tools that do things that aren't in the base toolbox. This module will use the **Tidyverse** package for many basic tasks; it includes tools for data manipulation/wrangling, creating graphics, dealing with dates and lots of other things. It was created by Hadley Wickham and you can read about it here:
 
 https://cran.r-project.org/web/packages/tidyverse/vignettes/paper.html
 
@@ -113,7 +118,7 @@ To run a line of code hold **control Ctrl** and enter on your keyboard (**comman
 **NOTE: The code is sequential so start at the top and work down. If you miss bits of code it will error and you will get confused and likely frustrated.**
 
 #### Coding Basics
-R has a **steep learning curve**, but the benefits of using it are well worth the effort. Take your time and think what the code is doing as you use it. As Wickham *et al*. (2023) note "*Frustration is natural when you start programming in R because it is such a stickler for punctuation, and even one character out of place can cause it to complain. But while you should expect to be a little frustrated, take comfort in that this experience is typical and temporary: it happens to everyone, and the only way to get over it is to keep trying*"
+R has a **steep learning curve**, but the benefits of using it are well worth the effort. Take your time and think what the code is doing as you use it. As Wickham *et al*. (2023) note "*Frustration is natural when you start programming in R because it is such a stickler for punctuation, and even one character out of place can cause it to complain. But while you should expect to be a little frustrated, take comfort in that this experience is typical and temporary: it happens to everyone, and the only way to get over it is to keep trying*".
 
 The best way to learn R is to take the basic code provided in the workshops and experiment with changing parameters - such as point type in a graph, line thickness or point colour - ***You cannot break it! Everything is fixable***. Make lots of notes as you go along and if you are getting really frustrated take a break! In many ways this is like learning a language; a little practice more frequently is a good strategy.
 
@@ -144,7 +149,7 @@ All R statements where you create objects, assignment statements, have the same 
 When reading that code, say “object name gets value” in your head. You will make lots of assignments, and typing <- repetitively is a pain to type. You can save time with RStudio’s keyboard shortcut: Press **Alt** and the **-** (the minus sign) in sequence. This is **Option** plus **-** (the minus sign) on a Mac.
 
 Let's explore some more...
-R will do lots of things. It will act like a huge calculator running mathematical calculations
+R will do lots of things. It will act like a huge calculator running mathematical calculations:
 
 ```{r}
 1/1000*25 # see the response in the console window (bottom left)
@@ -235,7 +240,7 @@ One of R’s great strengths is its ability to load in data in many different fo
 
 We can read CSVs into R using the read_csv() function as demonstrated below. This requires us to identify the file location within our workspace, and also assign an object name for our data in R. We will return to the datasets you downloaded and unzipped. **Make sure your working directory is pointing to the directory where you unzipped the datafiles**.
 
-I am resetting mine to the right place. I am doing it manually as show above. The copying the code from the console window showing the path and adding in the name of the csv file.
+I am resetting mine to the right place. I am doing it manually as outlined above. The copying the code from the console window showing the path and adding in the name of the csv file. I use the full path because it shows me where the files are. This is good practice and will help you when you come back to your code after sometime away from working with it.
 
 ```{r}
 # loads a csv, remember to correctly input the file location within your working directory or point to the directory where you data are stored.
@@ -273,6 +278,7 @@ Shows the first few lines of data.
 ```{r}
 tail(Qualifications) # will [have a guess what this returns!]
 ```
+We have loaded in the data from four different spreadsheets. There are two problems with it. Firstly, the column headers, although very informative, are too long for repeated typing while we are coding. Second, the data we are interested in is split between four dataframes each with many columns.
 
 #### Observing column names
 First, we need to find the columns we are interested in. These are shown in Table 1 below.
@@ -312,11 +318,12 @@ And refer to the table above we need column 38 which is "% White: English, Welsh
 #### <span style="color:red;">Task 2: Use the **print()** function to find the other column names/numbers from the Rooms, Qualifications and Employment dataframes. Make a note of the numbers you need them shortly! [~ 5mins]</span>
 
 #### Selecting columns
-Next, we will create new data objects which only include the columns we require. The new dataframes will be given the same name as the original ones so they will overwrite the previous versions. We are going to use percentages, not raw counts, because the LSOAs are have different numbers of people in them (see LSOA desciption above). You already know what columns you need (see Table 1 above) and we call them using the [] (square brackets) which allow us to subset the data. So it works like this:
+Next, we will create new data objects which only include the columns we require. The new dataframes will be given the same name as the original ones so they will overwrite the previous versions. We are going to use percentages, not raw counts, because the LSOAs are have different numbers of people in them (see LSOA desciption above). You already know what column names you need (see Table 1 above) and we call them using the [] (square brackets) which allow us to subset the data. So it works like this:
 
 Dataframe_name[first element are the rows, second element are the columns]. 
 
-**In R rows always come first before columns**. The comma '**,**' separates the rows from the columns. To access the correct bits of data we use the row and column numbers not names (there are ways to use names and we'll come to that as the course progresses). 
+**In R, rows always come first before columns**. The comma '**,**' separates the rows from the columns. To access the correct bits of data we use the row and column numbers not names (there are ways to use names and we'll come to that as the course progresses). 
+
 An example:
 Ethnicity[, c(2, 38)] 
 
@@ -349,8 +356,6 @@ Employment <- Employment[, c(2, 28)] # % Economically active (excluding full-tim
 Qualifications <- Qualifications[, c(2, 16)] # % Level 4 qualifications or above
 ```
 #### Renaming column headers
-Returning to our imported data. There are two problems with the data. Firstly, the column headers, although very informative, are too long for repeated typing while we are coding. Secondly, the data we are interested in is split between four dataframes each with many columns.
-
 We want to change the names of the columns to ease our interpretation and reduce the amount of typing we need to do! We can do this using the names(). If we wanted to change an individual column name we use the approach shown below. Here we are asking R to use the dataframe called 'Ethnicity' and changing column name 2 to "White_British". Notice that we don't need the comma **','** in the square brackets as the **names()** function is expecting columns. We can use ***rownames()** to change or set row names if necessary.
 ```{r}
 # to change an individual column name
