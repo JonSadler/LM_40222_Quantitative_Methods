@@ -447,13 +447,13 @@ Now you have a new dataframe called **Gap2007** which you can use to generate th
 **HINT:** Use the code from our plot above to guide you (i.e. the one we called **BhamPlot**); you only need to change the dataframe name, variable names and alter the labels. Remember to use **pop_by_mil** instead of **pop** in the **size=** command.
 
 ### Next Week
-Next week you will be introduced to the ways in which you can use R to map geographical data sources. We be using ggplot2 as key resources but introducing you to other packages, such as **tmap**, **sf** and **terra** which will allow you to use R as a Geographical Information System (GIS).
+Next week you will be introduced to the ways in which you can use R to map geographical data sources. We be using **ggplot2** as a key resource but will introduce you to other packages, such as **tmap**, **sf** and **terra** which will allow you to use R as a **Geographical Information System (GIS)**.
 
 ### Follow on work 
 
 1. Finish the class exercise if you didn't manage to do so in class.
 2. Read chapter 1 of <https://r4ds.hadley.nz/data-visualize> which we replicated with our plotting exercise today. 
-3. Work through the following tutorial. **Pay particular attention to the code verbs (filter, arrange and mutate). You have used two of them already. Tutorial: https://rpubs.com/Sergio_Garcia/592172.
+3. Work through the following tutorial. Pay particular attention to the **code verbs (filter, arrange and mutate; you've used two of them already)** and the use **faceting**. Tutorial: https://rpubs.com/Sergio_Garcia/592172.
 
 ----
 Jon Sadler Oct 2024
