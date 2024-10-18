@@ -414,13 +414,10 @@ write.csv(Census.Data, "/Users/jonsadler/Documents/GitHub/Teaching/LM_40222_Quan
 Next week will we use the same data set to introduce you how to start to explore data and understand its patterns and dependencies. This is a crucial and important **first step** before you start to analyse data. You will be developing this skill consistently through the module.
 
 ### Follow up work
-Please read the documents linked to above (i.e. tidyverse and tiday data links) if you didn't do so in the session **AND** then the chapter 2 ("Workflow Basics") in:
+1. Please read the documents linked to above (i.e. tidyverse and tiday data links) if you didn't do so in the session **AND** then the chapter 2 ("Workflow Basics") in: Hadley Wickham, Mine Cetinkaya-Rundel, Garrett Grolemund (2023) *R for Data Science: Import, Tidy, Transform, Visualize, and Model Data* (2nd Ed). O'Reilly. It is freely available here: https://r4ds.hadley.nz/. I encourage you also to play with the code and exercises too!
 
-Hadley Wickham, Mine Cetinkaya-Rundel, Garrett Grolemund (2023) *R for Data Science: Import, Tidy, Transform, Visualize, and Model Data* (2nd Ed). O'Reilly. It is freely available here:
-
-https://r4ds.hadley.nz/
-
-I encourage you also to play with the code and exercises too!
+2. Download the **tidyverse for beginners cheatsheet** and review it:
+https://images.datacamp.com/image/upload/v1676302697/Marketing/Blog/Tidyverse_Cheat_Sheet.pdf
 
 ### Appendix
 
