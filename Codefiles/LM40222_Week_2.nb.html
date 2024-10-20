@@ -2462,9 +2462,9 @@ this case 2007. We’ll use the <strong>filter()</strong> function from
 the <strong>tidyverse</strong> package to do that. The command is:</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuR2FwMjAwNyA8LSBnYXBtaW5kZXIgJT4lIFxuICBmaWx0ZXIoeWVhciA9PSAyMDA3KVxuYGBgIn0= -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuR2FwMjAwNyA8LSBnYXBtaW5kZXIgJT4lIFxuICBkcGx5cjo6ZmlsdGVyKHllYXIgPT0gMjAwNykgIyBmaWx0ZXIgZnVuY3Rpb24gaXMgZnJvbSBkcGx5clxuYGBgIn0= -->
 <pre class="r"><code>Gap2007 &lt;- gapminder %&gt;% 
-  filter(year == 2007)</code></pre>
+  dplyr::filter(year == 2007) # filter function is from dplyr</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
