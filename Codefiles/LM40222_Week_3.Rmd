@@ -6,94 +6,170 @@ output: html_notebook
 ### Outline:
 In this session, you will be introduced to how to use R to manipulate spatial data (e.g. raster data and polygon data such as shapefiles), the importance of coordinate reference systems (CRSs) and how these data can be used to generate maps.
 
-#### Essential reading:
-
-TBC
-
 #### Learning outcomes
 At the end of this workshop you will be able to use R to:
 
-- Import and manipulate raster and polygon data;
+- Import and manipulate polygon and raster data;
 - Change CRSs to ensure your maps accurately represent the spatial data they are showing;
 - Create basic maps to show spatial patterns in census and environmental data.
 
-#### Set our working directory for this week's workshop.
-```{r}
-setwd("/Users/jonsadler/Documents/GitHub/Teaching/LM_40222_Quantitative_Methods/Codefiles") # this is mine so don't copy the path!
-```
+#### Essential reading:
 
-```{r}
-setwd("add in your path - you do need these quote marks") 
-```
+- A good starting point for understanding spatial data can be found in the paper associated with the **tmap** package created by Tennekes (2018): Tennekes, M. (2018). tmap: Thematic Maps in R. *Journal of Statistical Software*, 84(6), 1–39. https://doi.org/10.18637/jss.v084.i06 [click on the 'paper' box].
+- A thorough outline of geographical data formats can be found in **Chapter 2** of Lovelace et al. (2024) *Geocomputation with R*. (2nd Ed): https://r.geocompx.org/spatial-class
 
-### Introduction to spatial data
-Dealing with spatial in R, or any Geographical Information System (GIS) for that matter, requires that you understand how spatial data are created and also represented or projected. We will start by introducing you to the raster/vector data models. The vector data model represents the geographical data using polygons (e.g. outlines of Birmingham's LOAs), lines (e.g. Rail and road networks), points (e.g. occurrences of crimes, road traffic accidents). These have discrete, well-defined borders, meaning that vector datasets usually have a high level of precision The are not neccessarily accurate. The raster data model divides the surface up into cells of constant size but at varying spatial scales (generally presented as metres, kilometers of decimal degrees). Raster datasets are an important source of geographic data and frequently derived from aerial photography and satellite-based remote sensing products offering data on, for example, land surface temperatures, atmospheric pollutants, vegetation height, etc. 
-
-
-#### Coordinate reference systems
-
-#### Features of spatial data
+### A brief introduction to spatial data
+Dealing with spatial in R, or any Geographical Information System (GIS) for that matter, requires that you understand how spatial data are created and also represented or projected. We will start by introducing you to the raster/vector data models. Raster datasets are an important source of geographic data and frequently derived from aerial photography and satellite-based remote sensing products offering data on, for example, land surface temperatures, atmospheric pollutants, vegetation height, etc. 
 
 ##### Polygon data and shapefiles
+The vector data model represents the geographical data using polygons (e.g. boundaries of Birmingham's LOAs, land cover classes), lines (e.g. Rail and road networks), points (e.g. occurrences of crimes, road traffic accidents). These have discrete, well-defined borders and can be combined (Figure 1). They are not neccessarily accurate however. The file types associated with shapefiles generally have a **'*.shp'** suffix but Other popular spatial vector file formats include GeoJSON (.geojson), GPX (.gpx), and KML (.kml). When using a gis they are accompanied by a run of other files: '.dbf','.cpg','.prj','.qmd','.shx' that need to sit in the subdirectory. 
+
+![](/Users/jonsadler/Documents/GitHub/Teaching/LM_40222_Quantitative_Methods/Images/sf_shapefiles.png)
+**Figure 1**: Different shapefiles formats available in the **sf** package (Source: Lovelace et al. 2024).
 
 ##### Raster data
+The raster data model divides the surface up into cells (or grids) of constant size but at varying spatial scales (generally presented as metres, kilometers of decimal degrees). Raster datasets are an important source of geographic data and frequently derived from aerial photography and satellite-based remote sensing products offering ***continuous** data on, for example, land surface temperatures, atmospheric pollutants, vegetation height, but it can be **categorical** data such as land or soil cover classes (Figure 2). Typical files types include: **geotiff** and **asc**.
 
+![](/Users/jonsadler/Documents/GitHub/Teaching/LM_40222_Quantitative_Methods/Images/raster_eg.png)
+**Figure 2:** Examples of continuous (A) and categorical raster data (Source: Lovelace et al. 2024)
+
+#### Coordinate reference systems
+Coordinate reference systems (CRSs) provide information on how the geographical data will be projected when it is mapped. These are tricky to get your head around. Geographic CRSs identify any location on the Earth’s surface using two values — longitude and latitude. Longitude is location in the East-West direction in angular distance from the Prime Meridian plane (Figure 3). Latitude is angular distance North or South of the equatorial plane. Distances in geographic CRSs are therefore not measured in meters. These values are used to project the map when you display it. You can transforms between CRSs from an ellipsoid to a flat plane to deliver units that accurately measure in metres and thus can be appropriately calculate the area of a shapfile or raster feature. The UK Ordance Survey Grid for examples is organised in this way as is UMT grid. That is all you need to know about these for the time being but make sure you read section *2.4.1** in Lovelace et al. (2024) *Geocomputation with R*. (2nd Ed), **before** next week's workshop.
+
+![](/Users/jonsadler/Documents/GitHub/Teaching/LM_40222_Quantitative_Methods/Images/CRS_example.png)
+**Figure 3:** Examples of CRS repsentations of geographical data (Source: Lovelace et al. 2024)
+ 
+#### Stellar examples of maps in R
 If you want to see what's possible with R's mapping capabilities then I refer to **Milos makes maps** tutorials on YouTube: 
 
 https://www.youtube.com/@milos-makes-maps
 
 Please have a watch of a few of them - it will help consolidate the functions and packages we are going to use as well as provide you with some useful coding tips!
 
+### Today's session
+First up we need to install some new libraries and set our working directory. 
+
 #### Install libraries
-The R functions for managing these datasets are relatively straightforward but require a set of new bespoke libraries as well as the tidyverse library we've been working with. We install them en masse to reduce the amount of code we need. It requires a bit of code to loop through the libraries. **Don't worry about understanding all of this at once. It gets much easier with practice.
+The R functions for managing these datasets are relatively straightforward, having some similarities to ggplot2, but they are in a set of bespoke libraries as well as the tidyverse library we've been working with. 
 
-```{r}
-# List of required libraries
-required_libraries <- c("sf","terra", "spdep","mapsf","maps","viridis","tmap","spData","spDataLarge")
-
-# Check for the libraries that are not already installed
-libraries_to_install <- required_libraries[!(required_libraries %in% installed.packages()[,"Package"])]
-
-# Install missing libraries
-if(length(libraries_to_install)) {
-  install.packages(libraries_to_install, dependencies = TRUE)
-}
-
-# Load all the required libraries
-lapply(required_libraries, library, character.only = TRUE)
-```
-This first line of code asks to supply a vector of the libraries we need using the **c()** command. We need the following libraries:
+We need the following packages:
 
 - **"sf"** - Read about it: https://r-spatial.github.io/sf/. Used to manage shapefiles, point data and so on.
 - **"terra"** - Read about it: https://rspatial.org/pkg/1-introduction.html. Used to manage spatial raster data.
 - **"spdep"** - https://cran.r-project.org/web/packages/spdep/index.html. Used for geospatial analyses such as nearest neighbour analyses. See Roger Bivand's book on the module resource list.
 - **"mapsf"** - https://riatelab.github.io/mapsf/articles/mapsf.html. The aim of mapsf is to obtain thematic maps with the visual quality of those built with a classical mapping or GIS software.
 - **maps** - https://cran.r-project.org/web/packages/maps/index.html.
-- **viridis** - https://cran.r-project.org/web/packages/viridis/vignettes/intro-to-viridis.html.
-- **tmap** - https://cran.r-project.org/web/packages/tmap/vignettes/tmap-getstarted.html.
-- **spData** - hold geographic data - https://nowosad.r-universe.dev/spData.
-- **spDataLarge** - load larger geographic data - https://nowosad.r-universe.dev/spDataLarge/spDataLarge.pdf.
+- **viridis** - https://cran.r-project.org/web/packages/viridis/vignettes/intro-to-viridis.html. Houses colour enhanced palettes for plotting
+- **tmap** - https://cran.r-project.org/web/packages/tmap/vignettes/tmap-getstarted.html. The core mapping package.
+- **spData** - holds geographic data - https://nowosad.r-universe.dev/spData.
+- **spDataLarge** - holds larger geographic data - https://nowosad.r-universe.dev/spDataLarge/spDataLarge.pdf.
 
-The **installed.packages()** function returns a matrix of installed packages and maps this against the libraries we need. The line checking for uninstalled packages uses !(required_libraries %in% installed.packages()[,"Package"]) expression to identify packages not yet installed. **install.packages()** installs missing packages and **dependencies=TRUE** makes sure all the correct dependencies are installed.
-**lapply()*:** Loads each required library name from a list (i.e. **lapply()** after checking whether they're installed. It is the equivalent of repeatedly typing library(thePackageName) many times.
+```{r}
+install.packages("sf", dependencies = TRUE)
+install.packages("terra", dependencies = TRUE)
+install.packages("spdep", dependencies = TRUE)
+install.packages("mapsf", dependencies = TRUE)
+install.packages("maps", dependencies = TRUE)
+install.packages("viridis", dependencies = TRUE)
+install.packages("tmap",dependencies = TRUE)
+install.packages("spData", dependencies = TRUE)
+# we need to install spDataLarge directly from the source using a different function
+install.packages("spDataLarge", repos = "https://nowosad.r-universe.dev")
+```
 
-**NOTE** that we are installing more than we need but we will use these are we work through the module.
+We load them *en masse* to reduce the amount of code we need. **Don't worry about understanding all of this at once. It gets much easier with practice**. We will use a **list** do do this. First we create a character vector (or list) object with all the library names and call it 'required_libraries'. Then we loop through the list repeating the **library** function for each name in the list.
+```{r}
+required_libraries <- c("sf","terra", "spdep","mapsf","maps","viridis","tmap","spData","spDataLarge","tidyverse")
+# Load all the required libraries
+lapply(required_libraries, library, character.only = TRUE) 
+# character.only = TRUE makes sure the names used are case sensitive.
+```
 
-We are going to start our mapping journey using **ggplot2** because if can handle spatial data and we are familiar with the syntax of the package.
+**NOTE** that we are installing more than we need for today's class but we will use these as we work through the module.
 
+#### Set our working directory for this week's workshop.
+```{r include=FALSE}
+setwd("/Users/jonsadler/Documents/GitHub/Teaching/LM_40222_Quantitative_Methods/Codefiles") # this is mine so don't copy the path!
+```
 
-ADD IN THE MAPPING STUFF - NEED TO FIND A GGPLOT2 MAPPING TUTORIAL TO WORK WITH...
+```{r}
+setwd("add in your path - you do need these quote marks") 
+```
+#### Mapping in R
+We could start our mapping journey using **ggplot2** because it can handle spatial data and we are familiar with the syntax of the package. However ggplot2 uses special feature classes to handle spatial data and the data must be organised into a dataframe. Instead, we'll use the **tmap** package (see paper above listed in as essential reading). **tmap**, like ***ggplot2** uses the ‘grammar of graphics’ (Wilkinson and Wills 2005) to layer attributes on the maps. It involves separating the input data and the aesthetics, after which each input dataset can then be  ‘mapped’ in different ways to show locations on the map (defined by data’s geometry), color, and other visual variables. The core mapping function is **tm_shape()** (which defines the input data as either a vector or raster object), followed by one or more layer elements such as **tm_fill()** and **tm_dots()** which allow you to modify the plotting aesthetics (Lovelace et al. 2024).
 
-Then go one to use tmap....
-
-Now we'll turn our attention to the census data we created in workshop one and carried out some EDA on in workshop two. So we need to locate it and load it:
+#### Mapping Birmingham's census data
+Now we'll turn our attention to the census data we created in workshop one and carried out some **EDA** on in workshop two. So we need to locate it and load it:
 
 #### Load data file
 ```{r}
 bham_data <- read_csv("add in your directory path") # link this to the directly where your data are sat
 ```
 
-We also need to download a shapefile for the LSOAs for the city. The should be located in your data directory in a subdirectory called shapefiles.
-```{r}
-# link to shapefiles and load....
+```{r include=FALSE}
+Bham_data <- read_csv("~/Documents/GitHub/Teaching/LM_40222_Quantitative_Methods/Data/Birmingham Census 2021 MSOA/practical_data.csv")
 ```
+
+We also need to download a shapefile for the LSOAs for the city. The should be located in your data directory in a subdirectory called 'shapefiles'.
+```{r}
+Bham_LSOA <- ("add your directory in here/")
+# the file you need is called 'E08000025.shx'
+# place it after the / and before the ", so.../E08000025.shp"
+```
+
+```{r include=FALSE}
+Bham_LSOA <- sf::st_read("~/Documents/GitHub/Teaching/LM_40222_Quantitative_Methods/Data/shapefiles/E08000025.shp") # using the sf package
+```
+
+We can a look at the shapefile using the following code from the **sf** package. There are a lot of nodes in the file so it will take a little time to load - **be patient**!
+
+```{r}
+tm_shape(Bham_LSOA) + tm_fill() + tm_borders()
+```
+Where, the object passed to tm_shape() in this case is Bham_LSOA, an sf object representing Birmingham's 639 LSOAs. Layers are added to represent the LSOAs visually, with tm_fill() and tm_borders() creating shaded areas and border outlines respectively. You can do this with an easier command as a quicker way to visualise the map.
+
+```{r}
+qtm(Bham_LSOA)
+```
+
+To link the census data to the shapefile we need to join the census data using the unique name of every LSOA as a key or index. But before we do that lets compare the files.
+```{r}
+str(Bham_data)
+```
+Recall this has 5 columns with the Code column housing the unique LSOA codes and the other four data relating to each LSOA. 
+Where as the shapefile looks like this
+```{r}
+glimpse(Bham_LSOA)
+```
+If we view this file we can see it has two sets of codes, one for output areas (oa11cd) and the other for LSOAs (lsoa11cd). 
+# joins data to the shapefile
+
+```{r}
+bham_LSOA_census <- merge(Bham_data, test, by.x="Code", by.y="LSOA11CD")
+```
+
+```{r}
+qtm(bham_LSOA_census, fill = "Qualification")
+```
+
+```{r include=FALSE}
+#preprocessing text to simplify the shapefile. The geo.JSON had additonal fields that I don't want to cause confusion.
+test <- st_read("/Users/jonsadler/Documents/GitHub/Teaching/LM_40222_Quantitative_Methods/Data/shapefiles/birmingham_lsoa.geo.json")
+#test <- test[,!names(test) %in% c("id", "LSOA11NM")]
+st_write("Test.shp")
+```
+
+
+#### Follow-up work
+
+1. Read section *2.4.1** in Lovelace et al. (2024) *Geocomputation with R*. (2nd Ed)
+
+
+### Citations
+
+- Lovelace, R., Nowosad, J., Meunchow, J. (2024) (2nd Ed.) *Geocomputation with R*. Chapman and Hall. London.
+- Tennekes, M. (2018). tmap: Thematic Maps in R. Journal of Statistical Software, 84(6), 1–39.
+- Wilkinson, Leland, and Graham Wills. (2005) *The Grammar of Graphics*. Springer Science and Business Media.
+
+-----
+Jon Sadler Oct 2024
