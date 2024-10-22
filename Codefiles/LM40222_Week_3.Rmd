@@ -4,22 +4,22 @@ subtitle: "Week 3"
 output: html_notebook
 ---
 ### Outline:
-In this session, you will be introduced to how to use R to manipulate spatial data (e.g. raster data and polygon data such as shapefiles), the importance of coordinate reference systems (CRSs) and how these data can be used to generate maps.
+In this session, you will be introduced to how to use R to manipulate spatial data (e.g. polygon data such as shapefiles), the importance of coordinate reference systems (CRSs) and how these data can be used to generate maps.
 
 #### Learning outcomes
 At the end of this workshop you will be able to use R to:
 
-- Import and manipulate polygon and raster data;
-- Change CRSs to ensure your maps accurately represent the spatial data they are showing;
+- Import and manipulate polygon and raster data.
+- Change CRSs to ensure your maps accurately represent the spatial data they are showing.
 - Create basic maps to show spatial patterns in census and environmental data.
 
 #### Essential reading:
 
 - A good starting point for understanding spatial data can be found in the paper associated with the **tmap** package created by Tennekes (2018): Tennekes, M. (2018). tmap: Thematic Maps in R. *Journal of Statistical Software*, 84(6), 1–39. https://doi.org/10.18637/jss.v084.i06 [click on the 'paper' box].
-- A thorough outline of geographical data formats can be found in **Chapter 2** of Lovelace et al. (2024) *Geocomputation with R*. (2nd Ed): https://r.geocompx.org/spatial-class
+- A thorough outline of geographical data formats can be found in **Chapter 2** of Lovelace et al. (2024) *Geocomputation with R*. (2nd Ed): https://r.geocompx.org/spatial-class.
 
 ### A brief introduction to spatial data
-Dealing with spatial in R, or any Geographical Information System (GIS) for that matter, requires that you understand how spatial data are created and also represented or projected. We will start by introducing you to the raster/vector data models. Raster datasets are an important source of geographic data and frequently derived from aerial photography and satellite-based remote sensing products offering data on, for example, land surface temperatures, atmospheric pollutants, vegetation height, etc. 
+Dealing with spatial in R, or any Geographical Information System (GIS) for that matter, requires that you understand how spatial data are created and also represented or projected. We will start by introducing you to the raster/vector data models. Raster datasets are an important source of geographic data and frequently derived from aerial photography and satellite-based remote sensing products offering data on, for example, land surface temperatures, atmospheric pollutants, tree canopy height, etc. 
 
 ##### Polygon data and shapefiles
 The vector data model represents the geographical data using polygons (e.g. boundaries of Birmingham's LOAs, land cover classes), lines (e.g. Rail and road networks), points (e.g. occurrences of crimes, road traffic accidents). These have discrete, well-defined borders and can be combined (Figure 1). They are not neccessarily accurate however. The file types associated with shapefiles generally have a **'*.shp'** suffix but Other popular spatial vector file formats include GeoJSON (.geojson), GPX (.gpx), and KML (.kml). When using a gis they are accompanied by a run of other files: '.dbf','.cpg','.prj','.qmd','.shx' that need to sit in the subdirectory. 
@@ -31,13 +31,13 @@ The vector data model represents the geographical data using polygons (e.g. boun
 The raster data model divides the surface up into cells (or grids) of constant size but at varying spatial scales (generally presented as metres, kilometers of decimal degrees). Raster datasets are an important source of geographic data and frequently derived from aerial photography and satellite-based remote sensing products offering ***continuous** data on, for example, land surface temperatures, atmospheric pollutants, vegetation height, but it can be **categorical** data such as land or soil cover classes (Figure 2). Typical files types include: **geotiff** and **asc**.
 
 ![](/Users/jonsadler/Documents/GitHub/Teaching/LM_40222_Quantitative_Methods/Images/raster_eg.png)
-**Figure 2:** Examples of continuous (A) and categorical raster data (Source: Lovelace et al. 2024)
+**Figure 2:** Examples of continuous (A) and categorical raster data (Source: Lovelace et al. 2024).
 
 #### Coordinate reference systems
-Coordinate reference systems (CRSs) provide information on how the geographical data will be projected when it is mapped. These are tricky to get your head around. Geographic CRSs identify any location on the Earth’s surface using two values — longitude and latitude. Longitude is location in the East-West direction in angular distance from the Prime Meridian plane (Figure 3). Latitude is angular distance North or South of the equatorial plane. Distances in geographic CRSs are therefore not measured in meters. These values are used to project the map when you display it. You can transforms between CRSs from an ellipsoid to a flat plane to deliver units that accurately measure in metres and thus can be appropriately calculate the area of a shapfile or raster feature. The UK Ordance Survey Grid for examples is organised in this way as is UMT grid. That is all you need to know about these for the time being but make sure you read section *2.4.1** in Lovelace et al. (2024) *Geocomputation with R*. (2nd Ed), **before** next week's workshop.
+Coordinate reference systems (CRSs) provide information on how the geographical data will be projected when it is mapped. These are tricky to get your head around. Geographic CRSs identify any location on the Earth’s surface using two values — longitude and latitude. Longitude is location in the East-West direction in angular distance from the Prime Meridian plane (Figure 3). Latitude is angular distance North or South of the equatorial plane. Distances in geographic CRSs are therefore not measured in meters. These values are used to project the map when you display it. You can transforms between CRSs from an ellipsoid to a flat plane to deliver units that accurately measure in metres and thus can be appropriately calculate the area of a shapfile or raster feature. The UK Ordance Survey Grid for examples is organised in this way as is UMT grid. That is all you need to know about these for the time being but make sure you read section **2.4.1** in Lovelace et al. (2024) *Geocomputation with R*. (2nd Ed) **before** next week's workshop.
 
 ![](/Users/jonsadler/Documents/GitHub/Teaching/LM_40222_Quantitative_Methods/Images/CRS_example.png)
-**Figure 3:** Examples of CRS repsentations of geographical data (Source: Lovelace et al. 2024)
+**Figure 3:** Examples of CRS repsentations of geographical data (Source: Lovelace et al. 2024).
  
 #### Stellar examples of maps in R
 If you want to see what's possible with R's mapping capabilities then I refer to **Milos makes maps** tutorials on YouTube: 
@@ -58,8 +58,7 @@ We need the following packages:
 - **"terra"** - Read about it: https://rspatial.org/pkg/1-introduction.html. Used to manage spatial raster data.
 - **"spdep"** - https://cran.r-project.org/web/packages/spdep/index.html. Used for geospatial analyses such as nearest neighbour analyses. See Roger Bivand's book on the module resource list.
 - **"mapsf"** - https://riatelab.github.io/mapsf/articles/mapsf.html. The aim of mapsf is to obtain thematic maps with the visual quality of those built with a classical mapping or GIS software.
-- **maps** - https://cran.r-project.org/web/packages/maps/index.html.
-- **viridis** - https://cran.r-project.org/web/packages/viridis/vignettes/intro-to-viridis.html. Houses colour enhanced palettes for plotting
+- **RColorBrewer** - https://cran.r-project.org/web/packages/viridis/vignettes/intro-to-viridis.html. Houses colour enhanced palettes for plotting
 - **tmap** - https://cran.r-project.org/web/packages/tmap/vignettes/tmap-getstarted.html. The core mapping package.
 - **spData** - holds geographic data - https://nowosad.r-universe.dev/spData.
 - **spDataLarge** - holds larger geographic data - https://nowosad.r-universe.dev/spDataLarge/spDataLarge.pdf.
@@ -69,8 +68,7 @@ install.packages("sf", dependencies = TRUE)
 install.packages("terra", dependencies = TRUE)
 install.packages("spdep", dependencies = TRUE)
 install.packages("mapsf", dependencies = TRUE)
-install.packages("maps", dependencies = TRUE)
-install.packages("viridis", dependencies = TRUE)
+install.packages("RColorBrewer", dependencies = TRUE)
 install.packages("tmap",dependencies = TRUE)
 install.packages("spData", dependencies = TRUE)
 # we need to install spDataLarge directly from the source using a different function
@@ -79,7 +77,7 @@ install.packages("spDataLarge", repos = "https://nowosad.r-universe.dev")
 
 We load them *en masse* to reduce the amount of code we need. **Don't worry about understanding all of this at once. It gets much easier with practice**. We will use a **list** do do this. First we create a character vector (or list) object with all the library names and call it 'required_libraries'. Then we loop through the list repeating the **library** function for each name in the list.
 ```{r}
-required_libraries <- c("sf","terra", "spdep","mapsf","maps","viridis","tmap","spData","spDataLarge","tidyverse")
+required_libraries <- c("sf","terra", "spdep","mapsf","RColorBrewer","tmap","spData","spDataLarge","tidyverse")
 # Load all the required libraries
 lapply(required_libraries, library, character.only = TRUE) 
 # character.only = TRUE makes sure the names used are case sensitive.
@@ -99,7 +97,7 @@ setwd("add in your path - you do need these quote marks")
 We could start our mapping journey using **ggplot2** because it can handle spatial data and we are familiar with the syntax of the package. However ggplot2 uses special feature classes to handle spatial data and the data must be organised into a dataframe. Instead, we'll use the **tmap** package (see paper above listed in as essential reading). **tmap**, like ***ggplot2** uses the ‘grammar of graphics’ (Wilkinson and Wills 2005) to layer attributes on the maps. It involves separating the input data and the aesthetics, after which each input dataset can then be  ‘mapped’ in different ways to show locations on the map (defined by data’s geometry), color, and other visual variables. The core mapping function is **tm_shape()** (which defines the input data as either a vector or raster object), followed by one or more layer elements such as **tm_fill()** and **tm_dots()** which allow you to modify the plotting aesthetics (Lovelace et al. 2024).
 
 #### Mapping Birmingham's census data
-Now we'll turn our attention to the census data we created in workshop one and carried out some **EDA** on in workshop two. So we need to locate it and load it:
+We'll turn our attention to the census data we created in workshop one and carried out some **EDA** on in workshop two. So we need to locate it and load it:
 
 #### Load data file
 ```{r}
@@ -118,7 +116,7 @@ Bham_LSOA <- ("add your directory in here/")
 ```
 
 ```{r include=FALSE}
-Bham_LSOA <- sf::st_read("~/Documents/GitHub/Teaching/LM_40222_Quantitative_Methods/Data/shapefiles/E08000025.shp") # using the sf package
+Bham_LSOA <- sf::st_read("~/Documents/GitHub/Teaching/LM_40222_Quantitative_Methods/Data/shapefiles/Birmingham_C21.shp") # using the sf package
 ```
 
 We can a look at the shapefile using the following code from the **sf** package. There are a lot of nodes in the file so it will take a little time to load - **be patient**!
@@ -126,7 +124,7 @@ We can a look at the shapefile using the following code from the **sf** package.
 ```{r}
 tm_shape(Bham_LSOA) + tm_fill() + tm_borders()
 ```
-Where, the object passed to tm_shape() in this case is Bham_LSOA, an sf object representing Birmingham's 639 LSOAs. Layers are added to represent the LSOAs visually, with tm_fill() and tm_borders() creating shaded areas and border outlines respectively. You can do this with an easier command as a quicker way to visualise the map.
+Where, the object passed to tm_shape() in this case is Bham_LSOA, an sf object representing Birmingham's 659 LSOAs. Layers are added to represent the LSOAs visually, with tm_fill() and tm_borders() creating shaded areas and border outlines respectively. You can do this with an easier command as a quicker way to visualise the map.
 
 ```{r}
 qtm(Bham_LSOA)
@@ -137,32 +135,96 @@ To link the census data to the shapefile we need to join the census data using t
 str(Bham_data)
 ```
 Recall this has 5 columns with the Code column housing the unique LSOA codes and the other four data relating to each LSOA. 
-Where as the shapefile looks like this
+
+Whereas the shapefile looks like this:
 ```{r}
 glimpse(Bham_LSOA)
 ```
-If we view this file we can see it has two sets of codes, one for output areas (oa11cd) and the other for LSOAs (lsoa11cd). 
-# joins data to the shapefile
+We have 9 columns but the key ones are 'LSOA21CD' which is the unique code of each LSOA and 'geometry' which holds the spatial polygons for the LSOA. To start to plot the census data we need to join it to the shapefile. 
 
 ```{r}
-bham_LSOA_census <- merge(Bham_data, test, by.x="Code", by.y="LSOA11CD")
+bham_LSOA_census <- Bham_LSOA %>%
+  dplyr::left_join(Bham_data, by = c("LSOA21CD" = "Code"))
 ```
+We now have a new file containing our census columns and the spatial geometry for each LSOA. But we need to check that is still an **sf** object. We can check using:
+
+```{r}
+class(bham_LSOA_census)
+```
+It is! you can see [1] "sf" is the first element in the output. 
+
+For reference but not for action, if it wasn't the mapping functions would fail and we would have to convert it back to an **sf** object using:
+```{r}
+bham_LSOA_census <- sf::st_as_sf(bham_LSOA_census)
+```
+
+Everything is fine to start mapping the census data. Here is a basic map showing the percentage of people in each LSOA with a level 4 qualification or above. The fill="Qualification" is the aesthetic that fills each LSOA polygon with the appropriate % of level 4 or above qualifications. **tmap** automatically selects a colour gradient and bins the percentage into classes of 20%. Of course, you can modify these parameters.
 
 ```{r}
 qtm(bham_LSOA_census, fill = "Qualification")
 ```
 
-```{r include=FALSE}
-#preprocessing text to simplify the shapefile. The geo.JSON had additonal fields that I don't want to cause confusion.
-test <- st_read("/Users/jonsadler/Documents/GitHub/Teaching/LM_40222_Quantitative_Methods/Data/shapefiles/birmingham_lsoa.geo.json")
-#test <- test[,!names(test) %in% c("id", "LSOA11NM")]
-st_write("Test.shp")
+#### Setting a coordinate system
+It is also important to set a coordinate reference system (crs) if we want to map and use the data. First of all we need to know what the crs is. We can find this out using:
+```{r}
+st_crs(bham_LSOA_census)
 ```
 
+In this case, the shapefile was downloaded from the Office for National Statistics website and it was created for the 2021 UK census. Usefully for us most geographical data comes with a crs data assigned and this is recognisable from its unique EPSG code. The output from the **st_crs()** function confirms that our data are projected using the British National Grid (EPSG:27700) which is produced by the Ordnance Survey; so we don't need to change it. **We'll look into transforming and changing a crs next time**.
+
+#### Taking control of out mapping
+You'll recall that the **tmap** library behaves in a similar way to **ggplot2** as it allows you to layer your maps and change the aesthetics to create elegant maps. So we can create the same map using some of the functions that permit us to change the parameters that control the aesthetics and thus change how a map looks. Much of what follows is based on https://data.cdrc.ac.uk/system/files/practical5_0.html - a tutorial created by Guy Lansley & James Cheshire in 2016. ***Tip of the hat for this extensive and impressive resource**.
+
+We load in the shapefile with the **tm_shape()** function then add in the **tm_fill()** function which is where we can decide how the polygons are filled in. All we need to do in the tm_shape() function is call the shapefile. Then, like ggplot2, we add (+) and a separate new function (tm_fill()) for the parameters which will determine how the polygons are filled in the graphic. We can varying the numbers of different colours and colour we use as a gradient. The **RColorBrewer** does the work with colour palettes we just nee to add the colour we want in the tm_fill() call; in this case 'palette="Greens".
+```{r}
+# setting a colour palette
+tm_shape(bham_LSOA_census) + tm_fill("Qualification", palette = "Greens") 
+```
+#### [TASK TBC: Spend a little time exploring all of the available functions and how they can be customised by visiting the web page for tmap, or by entering ? followed by a function name into r (i.e. ?tm_fill).[~ 5 min]]{style="color:red;"}
+
+#### Setting the colour intervals
+There are a range of different interval options available in the style parameter. You can easily change your visualisation using this. To do this you enter “style =” followed by one of the options below.
+
+- **equal** - divides the range of the variable into n parts.
+- **pretty** - chooses a number of breaks to fit a sequence of equally spaced ‘round’ values. So they keys for these intervals are always tidy and memorable.
+- **quantile** - equal number of cases in each group
+- **jenks** - looks for natural breaks in the data
+- **Cat** - if the variable is categorical (i.e. not continuous data)
+
+We'll try 'jenks' and change the colours
+```{r}
+tm_shape(bham_LSOA_census) + tm_fill("Qualification", style = "jenks", palette = "Blues")
+```
+#### [TASK TBC: Try using some of the other styles and see how they look (i.e. ?tm_fill).[~ 5 min]]{style="color:red;"}
+
+If you need more breaks or fewer options exist to directly control the number of breaks using the **breaks** option of adding the number you want using 'n=mynumber' into the tm_fill() calls. 
+
+You can add a histogram within the legend by adding legend.hist = TRUE within tm_fill. This shows how the different levels within the breaks are distributed across the data - a very useful feature. We use + **tm_layout()** to  move the legend from its default position and placing it outside the frame (legend.outside = TRUE) to the right (legend.outside.position = "right") and we also choose to remove the frame (frame = FALSE).
+```{r}
+tm_shape(bham_LSOA_census) + tm_fill("Qualification", style = "quantile", n = 5, palette = "Reds", legend.hist = TRUE) + tm_layout(frame = FALSE, legend.outside = TRUE, legend.outside.position = "right")  
+```
+#### [TASK TBC: What does the histogram tell us about the educational levels within the city? Make a few notes on that in your script or notebook.[~ 5 min]]{style="color:red;"}
+
+#### Adding some final touches to your maps
+There are numerous options to add final touches to your maps using map attributes (Figure 4). We can also enter a north arrow with **tm_compass**. And a scale bar with **tm_scale_bar**
+
+![](/Users/jonsadler/Documents/GitHub/Teaching/LM_40222_Quantitative_Methods/Images/tmap_attributes.png)
+**Figure 4:** Some map attributes available to you.
+
+```{r}
+tm_shape(bham_LSOA_census) + tm_fill("Qualification", style = "quantile", n = 5, palette = "Reds", legend.hist = TRUE) + tm_layout(frame = FALSE, legend.outside = TRUE, legend.outside.position = "right") + tm_compass(position = c("left", "top")) + tm_scale_bar(position = c("right", "bottom"))
+```
+And finally we can add some titles for the legend and the map. Notice that the plot title needs to be in the **tm_layout()** function and the caption title in the **tm_fill** function.
+```{r}
+tm_shape(bham_LSOA_census) + tm_fill("Qualification", style = "quantile", n = 5, palette = "Reds", legend.hist = TRUE, title = "% with a level 4 qualification") + tm_layout(frame = FALSE, legend.outside = TRUE, legend.outside.position = "right", title = "Birmingham, UK") + tm_compass(position = c("left", "top")) + tm_scale_bar(position = c("right", "bottom"))
+```
+
+#### [CLASS EXERCISE: Create a similar map to this using the % unemployment statistics rather than qualifications. Use a different colour palette and a different number of levels [~ 10 min]]{style="color:red;"}
 
 #### Follow-up work
 
-1. Read section *2.4.1** in Lovelace et al. (2024) *Geocomputation with R*. (2nd Ed)
+1. Read section **2.4.1** in Lovelace et al. (2024) *Geocomputation with R*. (2nd Ed).
+2. Read this lovely piece by James Cheshire examining why we should still create maps as Geographers: https://rgs-ibg.onlinelibrary.wiley.com/doi/10.1111/tran.12709.
 
 
 ### Citations
